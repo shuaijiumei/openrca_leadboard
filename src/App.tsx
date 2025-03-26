@@ -20,7 +20,7 @@ function App() {
       <Router>
         <Layout>
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path="/openrca_leadboard/" element={<Home />} />
             {/* Add more routes as needed */}
           </Routes>
         </Layout>

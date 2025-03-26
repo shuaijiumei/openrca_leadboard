@@ -247,7 +247,7 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
           }}>
             <Box
               component="img"
-              src="/microsoft.jpg"
+              src="/openrca_leadboard/microsoft.jpg"
               alt="Microsoft Logo"
               onClick={() => window.open('https://www.microsoft.com', '_blank')}
               sx={{
