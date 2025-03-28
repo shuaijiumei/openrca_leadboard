@@ -553,6 +553,74 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
             </Box>
           </Box>
 
+          {/* 提交须知 */}
+          <Paper sx={{ 
+            mt: 2, 
+            p: 3, 
+            backgroundColor: '#fff8e1', 
+            borderRadius: '12px',
+            border: '1px solid #ffecb3',
+            boxShadow: '0 2px 8px rgba(0, 0, 0, 0.05)'
+          }}>
+            <Typography 
+              variant="subtitle1" 
+              sx={{ 
+                fontWeight: 600, 
+                color: '#E65100',
+                mb: 1.5
+              }}
+            >
+              Submission Guidelines
+            </Typography>
+            <Typography variant="body2" sx={{ color: '#424242', mb: 1.5, lineHeight: 1.6 }}>
+            If you want to have your results included, please include the following in your email:
+            </Typography>
+            <Box sx={{ 
+              display: 'flex', 
+              flexDirection: 'column',
+              gap: 1,
+              pl: 2,
+              '& .MuiTypography-root': {
+                position: 'relative',
+                pl: 2.5,
+                '&::before': {
+                  content: '""',
+                  position: 'absolute',
+                  left: 0,
+                  top: '0.5em',
+                  width: '6px',
+                  height: '6px',
+                  borderRadius: '50%',
+                  backgroundColor: '#E65100'
+                }
+              }
+            }}>
+              <Typography variant="body2" sx={{ color: '#424242' }}>
+                Name of your method
+              </Typography>
+              <Typography variant="body2" sx={{ color: '#424242' }}>
+                Inference results in valid format (see <a href="https://github.com/microsoft/OpenRCA?tab=readme-ov-file#%EF%B8%8F-evaluation" target="_blank" rel="noopener noreferrer" style={{ color: '#1976d2', textDecoration: 'underline' }}>GitHub repository</a>)
+              </Typography>
+              <Typography variant="body2" sx={{ color: '#424242' }}>
+                Accuracy of your method tested in your own environment
+              </Typography>
+              <Typography variant="body2" sx={{ color: '#424242' }}>
+                (Optional) Link to your repository
+              </Typography>
+              <Typography variant="body2" sx={{ color: '#424242' }}>
+                (Optional) Execution trajectory of your method
+              </Typography>
+              <Typography variant="body2" sx={{ color: '#424242' }}>
+                (Optional) Reproduction guidelines of your method
+              </Typography>
+              <Typography variant="body2" sx={{ color: '#424242' }}>
+                (Optional) Docker image of your method and environment
+              </Typography>
+            </Box>
+            <Typography variant="body2" sx={{ color: '#666', mt: 1.5, fontStyle: 'italic' }}>
+              Note: Inclusion in the leaderboard will be attempted on a best-effort basis. We cannot guarantee the timely processing of requests.
+            </Typography>
+          </Paper>
 
           <Box sx={{ mt: 6 }}>
             <Typography 
