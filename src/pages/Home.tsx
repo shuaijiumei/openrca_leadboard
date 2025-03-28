@@ -623,15 +623,11 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
 
             <Box sx={{ mb: 3, textAlign: 'center' }}>
               <Typography variant="body1" sx={{ color: '#424242' }}>
-              Junjielong Xu<sup>1,2*</sup>, Qinan Zhang<sup>1</sup>, Zhiqing Zhong<sup>1</sup>, Shilin He<sup>2†</sup>, Chaoyun Zhang<sup>2</sup>, Qingwei Lin<sup>2</sup>, Dan Pei<sup>3</sup>, Pinjia He<sup>1†</sup>, Dongmei Zhang<sup>2</sup>, Qi Zhang<sup>2</sup>
+              Junjielong Xu<sup>1,2</sup>, Qinan Zhang<sup>1</sup>, Zhiqing Zhong<sup>1</sup>, Shilin He<sup>2</sup>, Chaoyun Zhang<sup>2</sup>, Qingwei Lin<sup>2</sup>, Dan Pei<sup>3</sup>, Pinjia He<sup>1</sup>, Dongmei Zhang<sup>2</sup>, Qi Zhang<sup>2</sup>
               </Typography>
               <Typography variant="body2" sx={{ color: '#666', mt: 1 }}>
                 <sup>1</sup>School of Data Science, The Chinese University of Hong Kong, Shenzhen <sup>2</sup>Microsoft <sup>3</sup>Tsinghua University
                 <br></br>
-                <sup>*</sup> Work was done when Junjielong Xu was interning at Microsoft DKI.
-                <br></br>
-                 <sup>†</sup> Shilin He and Pinjia He are the corresponding authors.
-
               </Typography>
             </Box>
 
