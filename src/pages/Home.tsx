@@ -155,7 +155,7 @@ const Home = () => {
       width: '20%',
       sortable: false 
     },
-    { id: 'org', label: 'Organization', width: '15%', sortable: false },
+    { id: 'org', label: 'Org.', width: '15%', sortable: false },
     { id: 'correct', label: 'Correct', width: '15%', sortable: true },
     { id: 'partial', label: 'Partial', width: '15%', sortable: true },
     { id: 'date', label: 'Date', width: '10%', sortable: true },
