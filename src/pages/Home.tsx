@@ -584,7 +584,7 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
                 textAlign: 'left'
               }}
             >
-              Each OpenRCA task is based on a real-world failure case from a software system and its associated telemetry data. Given the failure case and its associated telemetry, the task is to identify the root cause that triggered the failure, requiring comprehension of software dependencies and reasoning over heterogeneous, long-context telemetry data.
+              Each OpenRCA task is based on a real-world failure case from a software system and its associated telemetry data. Given the failure case and its associated telemetry, the task is to identify the root cause of the failure, requiring comprehension of software dependencies and reasoning over heterogeneous, long-context telemetry data.
             </Typography>
 
           
