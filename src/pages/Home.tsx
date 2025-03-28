@@ -6,26 +6,9 @@ import DescriptionIcon from '@mui/icons-material/Description';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import FilterListIcon from '@mui/icons-material/FilterList';
-
-interface Data {
-  name: string;
-  model: string,
-  correct: string,
-  partial: string,
-  date: string
-}
+import { Data, modelColorMap, orgLogoMap, news, modelData } from '../data/modelData';
 
 type Order = 'asc' | 'desc';
-
-// 模型颜色映射
-const modelColorMap: { [key: string]: { color: string, backgroundColor: string } } = {
-  'Claude 3.5 Sonnet': { color: '#1a237e', backgroundColor: '#e8eaf6' },
-  'GPT-4o': { color: '#004d40', backgroundColor: '#e0f2f1' },
-  'Gemini 1.5 Pro': { color: '#b71c1c', backgroundColor: '#ffebee' },
-  'Mistral Large 2': { color: '#0d47a1', backgroundColor: '#bbdefb' },
-  'Command R+': { color: '#4a148c', backgroundColor: '#e1bee7' },
-  'Llama 3.1 Instruct': { color: '#e65100', backgroundColor: '#ffe0b2' }
-};
 
 // 比较函数
 function getComparator(order: Order, orderBy: keyof Data) {
@@ -59,33 +42,10 @@ function getComparator(order: Order, orderBy: keyof Data) {
 const Home = () => {
   const [order, setOrder] = useState<Order>('desc');
   const [orderBy, setOrderBy] = useState<keyof Data>('correct');
-  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [openSnackbarCite, setOpenSnackbarCite] = useState(false);
+  const [openSnackbarMail, setOpenSnackbarMail] = useState(false);
   const [selectedModels, setSelectedModels] = useState<string[]>(Object.keys(modelColorMap));
   const [modelFilterAnchor, setModelFilterAnchor] = useState<null | HTMLElement>(null);
-
-  const news = [
-    { date: '2025/2/28', content: 'Our paper has been accepted by ICLR 2025.' },
-    { date: '2025/2/15', content: 'Released OpenRCA dataset with 335 failure cases.' }
-  ]
-
-  const modelData: Data[] = [
-    { name: 'RCA-Agent', model: 'Claude 3.5 Sonnet', correct: '11.34%', partial: '17.31%', date: '2025/2/17' },
-    { name: 'RCA-Agent', model: 'GPT-4o', correct: '8.96%', partial: '17.91%', date: '2025/2/17' },
-    { name: 'RCA-Agent', model: 'Gemini 1.5 Pro', correct: '2.69%', partial: '6.87%', date: '2025/2/17' },
-    { name: 'Balanced', model: 'Claude 3.5 Sonnet', correct: '3.88%', partial: '18.81%', date: '2025/2/17' },
-    { name: 'Balanced', model: 'GPT-4o', correct: '3.28%', partial: '14.33%', date: '2025/2/17' },
-    { name: 'Balanced', model: 'Gemini 1.5 Pro', correct: '6.27%', partial: '24.18%', date: '2025/2/17' },
-    { name: 'Oracle', model: 'Claude 3.5 Sonnet', correct: '5.37%', partial: '17.61%', date: '2025/2/15' },
-    { name: 'Oracle', model: 'GPT-4o', correct: '6.27%', partial: '15.82%', date: '2025/2/15' },
-    { name: 'Oracle', model: 'Gemini 1.5 Pro', correct: '7.16%', partial: '23.58%', date: '2025/2/15' },
-    { name: 'Balanced', model: 'Mistral Large 2', correct: '3.58%', partial: '6.40%', date: '2025/2/17' },
-    { name: 'Oracle', model: 'Mistral Large 2', correct: '4.48%', partial: '10.45%', date: '2025/2/15' },
-    { name: 'Balanced', model: 'Command R+', correct: '4.18%', partial: '8.96%', date: '2025/2/17' },
-    { name: 'Oracle', model: 'Command R+', correct: '4.78%', partial: '7.46%', date: '2025/2/15' },
-    { name: 'Balanced', model: 'Llama 3.1 Instruct', correct: '2.99%', partial: '14.63%', date: '2025/2/17' },
-    { name: 'Oracle', model: 'Llama 3.1 Instruct', correct: '3.88%', partial: '14.93%', date: '2025/2/15' },
-    { name: 'RCA-Agent', model: 'Llama 3.1 Instruct', correct: '3.28%', partial: '5.67%', date: '2025/2/17' },
-  ];
 
   const handleRequestSort = (property: keyof Data) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -124,12 +84,21 @@ const Home = () => {
     .filter(row => selectedModels.includes(row.model))
     .sort(getComparator(order, orderBy));
 
-  const headCells = [
-    { id: 'name' as keyof Data, label: 'Method Name', width: '30%', sortable: false },
+  // 找出最高值
+  const maxCorrect = Math.max(...filteredAndSortedData.map(row => parseFloat(row.correct)));
+  const maxPartial = Math.max(...filteredAndSortedData.map(row => parseFloat(row.partial)));
+
+  const headCells: Array<{
+    id: keyof Data;
+    label: string | JSX.Element;
+    width: string;
+    sortable: boolean;
+  }> = [
+    { id: 'name', label: 'Method Name', width: '25%', sortable: false },
     { 
-      id: 'model' as keyof Data, 
+      id: 'model', 
       label: (
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1 }}>
           Model
           <IconButton 
             size="small" 
@@ -183,12 +152,13 @@ const Home = () => {
           </Menu>
         </Box>
       ),
-      width: '25%', 
+      width: '20%',
       sortable: false 
     },
-    { id: 'correct' as keyof Data, label: 'Correct', width: '15%', sortable: true },
-    { id: 'partial' as keyof Data, label: 'Partial', width: '15%', sortable: true },
-    { id: 'date' as keyof Data, label: 'Date', width: '15%', sortable: true },
+    { id: 'org', label: 'Organization', width: '15%', sortable: false },
+    { id: 'correct', label: 'Correct', width: '15%', sortable: true },
+    { id: 'partial', label: 'Partial', width: '15%', sortable: true },
+    { id: 'date', label: 'Date', width: '10%', sortable: true },
   ];
 
   const handleCopyClick = () => {
@@ -201,7 +171,7 @@ year={2025},
 url={https://openreview.net/forum?id=M4qNIzQYpd}
 }`;
     navigator.clipboard.writeText(citationText);
-    setOpenSnackbar(true);
+    setOpenSnackbarCite(true);
   };
 
   return (
@@ -350,7 +320,7 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
             <Typography 
               variant="h5" 
               sx={{ 
-                mb: 3, 
+                mb: 2, 
                 background: 'linear-gradient(45deg, #2196F3 30%, #1565C0 90%)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
@@ -369,17 +339,17 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
                 maxHeight: 400,
                 overflow: 'overlay',
                 '&::-webkit-scrollbar': {
-                  width: '8px',
-                  height: '8px',
+                  width: '6px',
+                  height: '6px',
                   backgroundColor: 'transparent'
                 },
                 '&::-webkit-scrollbar-track': {
                   background: 'transparent',
-                  borderRadius: '4px'
+                  borderRadius: '3px'
                 },
                 '&::-webkit-scrollbar-thumb': {
                   background: 'rgba(33, 150, 243, 0.6)',
-                  borderRadius: '4px',
+                  borderRadius: '3px',
                   '&:hover': {
                     background: 'rgba(21, 101, 192, 0.8)'
                   }
@@ -391,55 +361,60 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
                   '&:hover::-webkit-scrollbar-thumb': {
                     visibility: 'visible'
                   }
-                },
-                '& .MuiTableCell-head': {
-                  backgroundColor: '#1565C0',
-                  color: '#ffffff',
-                  fontWeight: 600,
-                  fontSize: '0.875rem',
-                  whiteSpace: 'nowrap',
-                  position: 'sticky',
-                  top: 0,
-                  zIndex: 1
-                },
-                '& .MuiTableRow-root:nth-of-type(even)': {
-                  backgroundColor: '#ffffff'
-                },
-                '& .MuiTableRow-root:nth-of-type(odd)': {
-                  backgroundColor: '#f8fafc'
-                },
-                '& .MuiTableRow-root:hover': {
-                  backgroundColor: '#e3f2fd'
-                },
-                '& .MuiTableCell-root': {
-                  padding: '16px 24px',
-                  borderBottom: '1px solid #e2e8f0'
-                },
-                '& .MuiTableSortLabel-root.Mui-active': {
-                  color: '#ffffff'
-                },
-                '& .MuiTableSortLabel-icon': {
-                  color: '#ffffff !important'
                 }
               }}
             >
-              <Table stickyHeader>
+              <Table 
+                stickyHeader 
+                size="small"
+                sx={{
+                  '& .MuiTableCell-root': {
+                    padding: '8px 16px',
+                  }
+                }}
+              >
                 <TableHead>
                   <TableRow>
                     {headCells.map((headCell) => (
                       <TableCell 
                         key={headCell.id}
                         sortDirection={orderBy === headCell.id ? order : false}
-                        sx={{ width: headCell.width }}
+                        sx={{ 
+                          width: headCell.width,
+                          backgroundColor: '#1976d2',
+                          color: 'white',
+                          fontWeight: 600,
+                          textAlign: 'center'
+                        }}
                       >
-                        {headCell.sortable ? (
-                          <TableSortLabel
-                            active={orderBy === headCell.id}
-                            direction={orderBy === headCell.id ? order : 'asc'}
-                            onClick={() => handleRequestSort(headCell.id)}
-                          >
-                            {headCell.label}
-                          </TableSortLabel>
+                        {typeof headCell.label === 'string' ? (
+                          headCell.sortable ? (
+                            <TableSortLabel
+                              active={orderBy === headCell.id}
+                              direction={orderBy === headCell.id ? order : 'asc'}
+                              onClick={() => handleRequestSort(headCell.id)}
+                              sx={{
+                                width: '100%',
+                                justifyContent: 'center',
+                                '&.MuiTableSortLabel-root': {
+                                  color: 'white',
+                                },
+                                '&.MuiTableSortLabel-root:hover': {
+                                  color: 'white',
+                                },
+                                '&.Mui-active': {
+                                  color: 'white',
+                                },
+                                '& .MuiTableSortLabel-icon': {
+                                  color: 'white !important',
+                                },
+                              }}
+                            >
+                              {headCell.label}
+                            </TableSortLabel>
+                          ) : (
+                            headCell.label
+                          )
                         ) : (
                           headCell.label
                         )}
@@ -453,32 +428,61 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
                       key={row.name + row.model}
                       sx={{ 
                         '&:last-child td, &:last-child th': { border: 0 },
-                        ...(index === 0 && {
-                          '& td': { 
-                            fontWeight: 600,
-                            color: '#1565C0'
-                          }
-                        })
+                        backgroundColor: row.model.includes('*') ? 'rgba(0, 0, 0, 0.02)' : 'inherit'
                       }}
                     >
-                      <TableCell sx={{ width: '15%', textAlign: 'left', fontWeight: 600 }}>{row.name}</TableCell>
-                      <TableCell sx={{ width: '20%', textAlign: 'left' }}>
+                      <TableCell sx={{ width: '25%', textAlign: 'center', fontWeight: 600 }}>
+                        {row.name}
+                      </TableCell>
+                      <TableCell sx={{ width: '20%', textAlign: 'center' }}>
                         <Chip 
                           label={row.model}
                           size="small"
                           sx={{
-                            color: modelColorMap[row.model]?.color || '#000',
-                            backgroundColor: modelColorMap[row.model]?.backgroundColor || '#f5f5f5',
+                            color: modelColorMap[row.model.replace('*', '')]?.color || '#000',
+                            backgroundColor: modelColorMap[row.model.replace('*', '')]?.backgroundColor || '#f5f5f5',
                             fontWeight: 500,
                             '&:hover': {
-                              backgroundColor: modelColorMap[row.model]?.backgroundColor || '#f5f5f5',
+                              backgroundColor: modelColorMap[row.model.replace('*', '')]?.backgroundColor || '#f5f5f5',
                             }
                           }}
                         />
                       </TableCell>
-                      <TableCell sx={{ width: '15%', textAlign: 'left' }}>{row.correct}</TableCell>
-                      <TableCell sx={{ width: '15%', textAlign: 'left' }}>{row.partial}</TableCell>
-                      <TableCell sx={{ width: '15%', textAlign: 'left' }}>{row.date}</TableCell>
+                      <TableCell sx={{ width: '15%', textAlign: 'center' }}>
+                        <Box
+                          component="img"
+                          src={orgLogoMap[row.org] || '/openrca_leadboard/default_logo.svg'}
+                          alt={`${row.org} Logo`}
+                          sx={{
+                            height: 20,
+                            width: 'auto',
+                            objectFit: 'contain',
+                            opacity: row.model.includes('*') ? 0.7 : 1,
+                            filter: row.model.includes('*') ? 'grayscale(20%)' : 'none'
+                          }}
+                        />
+                      </TableCell>
+                      <TableCell 
+                        sx={{ 
+                          width: '15%', 
+                          textAlign: 'center',
+                          fontWeight: parseFloat(row.correct) === maxCorrect ? 600 : 'inherit',
+                          color: parseFloat(row.correct) === maxCorrect ? '#1976d2' : 'inherit'
+                        }}
+                      >
+                        {row.correct}
+                      </TableCell>
+                      <TableCell 
+                        sx={{ 
+                          width: '15%', 
+                          textAlign: 'center',
+                          fontWeight: parseFloat(row.partial) === maxPartial ? 600 : 'inherit',
+                          color: parseFloat(row.partial) === maxPartial ? '#1976d2' : 'inherit'
+                        }}
+                      >
+                        {row.partial}
+                      </TableCell>
+                      <TableCell sx={{ width: '10%', textAlign: 'center' }}>{row.date}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -504,6 +508,10 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
               <Button
                 variant="contained"
                 startIcon={<EmailIcon />}
+                onClick={() => {
+                  navigator.clipboard.writeText('openrcanon@gmail.com');
+                  setOpenSnackbarMail(true);
+                }}
                 sx={{
                   backgroundColor: 'rgba(255, 255, 255, 0.1)',
                   color: 'white',
@@ -514,9 +522,18 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
               >
                 Contact
               </Button>
+              <Snackbar
+                open={openSnackbarMail}
+                autoHideDuration={3000}
+                onClose={() => setOpenSnackbarMail(false)}
+                message="Mail has been copied to clipboard!"
+                anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+              />
               <Button
                 variant="contained"
                 startIcon={<FileUploadIcon />}
+                component="a"
+                href="mailto:openrcanon@gmail.com"
                 sx={{
                   backgroundColor: '#000000',
                   color: 'white',
@@ -552,8 +569,12 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
                 textAlign: 'left'
               }}
             >
-              Identify the root cause that triggered the failure!
+              Identify the root cause of the failure!
             </Typography>
+            {/* 加上图片 */}
+            <Box sx={{ display: 'flex', justifyContent: 'center', mb: 4 }}>
+              <img src="/openrca_leadboard/overview.png" alt="OpenRCA Task" style={{ maxWidth: '100%', height: 'auto' }} />
+            </Box>
             <Typography 
               variant="body1" 
               sx={{ 
@@ -566,40 +587,7 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
               Each OpenRCA task is based on a real-world failure case from a software system and its associated telemetry data. Given the failure case and its associated telemetry, the task is to identify the root cause that triggered the failure, requiring comprehension of software dependencies and reasoning over heterogeneous, long-context telemetry data.
             </Typography>
 
-            <Typography 
-              variant="h5" 
-              sx={{
-                color: '#2c3e50',
-                fontWeight: 600,
-                mb: 3,
-                mt: 6,
-                textAlign: 'left'
-              }}
-            >
-              What metrics do you measure?
-            </Typography>
-            <Typography 
-              variant="h6" 
-              sx={{ 
-                color: '#2c3e50',
-                fontWeight: 500,
-                mb: 2,
-                textAlign: 'left'
-              }}
-            >
-              We measure whether the LLM can identify the root cause that triggered the failure.
-            </Typography>
-            <Typography 
-              variant="body1" 
-              sx={{ 
-                color: '#424242',
-                mb: 4,
-                lineHeight: 1.8,
-                textAlign: 'left'
-              }}
-            >
-              For a instance, if the LLM can identify the root cause that triggered the failure, we call it a successful RCA.
-            </Typography>
+          
 
             <Typography 
               variant="h5" 
@@ -678,7 +666,7 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
                 textAlign: 'center'
               }}
             >
-              If you have any remaining questions, please feel free to contact us at contact@openrca.com
+              If you have any remaining questions, please feel free to contact us at <a href="mailto:openrcanon@gmail.com">openrcanon@gmail.com</a>
             </Typography>
 
             <Typography 
@@ -767,9 +755,9 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
 &#125;</pre>
             </Paper>
             <Snackbar
-              open={openSnackbar}
+              open={openSnackbarCite}
               autoHideDuration={2000}
-              onClose={() => setOpenSnackbar(false)}
+              onClose={() => setOpenSnackbarCite(false)}
               message="Citation copied to clipboard"
               anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
             />
