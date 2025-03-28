@@ -10,6 +10,8 @@ import { Data, modelColorMap, orgLogoMap, news, modelData } from '../data/modelD
 
 type Order = 'asc' | 'desc';
 
+const prefix = '/openrca_leadboard'
+
 // 比较函数
 function getComparator(order: Order, orderBy: keyof Data) {
   return (a: Data, b: Data) => {
@@ -195,7 +197,7 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
               textAlign: 'center'
             }}
           >
-            OPENRCA: CAN LARGE LANGUAGE MODELS LOCATE THE ROOT CAUSE OF SOFTWARE FAILURES?
+            OPENRCA: Can Large Language Models Locate the Root Cause of Software Failures?
           </Typography>
           <Typography 
             variant="subtitle1" 
@@ -217,7 +219,7 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
           }}>
             <Box
               component="img"
-              src="/openrca_leadboard/microsoft.jpg"
+              src={`${prefix}/microsoft.jpg`}
               alt="Microsoft Logo"
               onClick={() => window.open('https://www.microsoft.com', '_blank')}
               sx={{
@@ -230,9 +232,9 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
                 }
               }}
             />
-            {/* <Box
+            <Box
               component="img" 
-              src="/public/cuhksz.png"
+              src={`${prefix}/cuhksz.png`}
               alt="CUHK-SZ Logo"
               onClick={() => window.open('https://www.cuhk.edu.cn/', '_blank')}
               sx={{
@@ -247,7 +249,7 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
             />
             <Box
               component="img"
-              src="/public/thu.jpg"
+              src={`${prefix}/thu.jpg`}
               alt="Tsinghua Logo"
               onClick={() => window.open('https://www.tsinghua.edu.cn', '_blank')}
               sx={{
@@ -259,7 +261,7 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
                   transform: 'scale(1.05)'
                 }
               }}
-            /> */}
+            />
           </Box>
           </Typography>
 
@@ -451,7 +453,7 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
                       <TableCell sx={{ width: '15%', textAlign: 'center' }}>
                         <Box
                           component="img"
-                          src={orgLogoMap[row.org] || '/openrca_leadboard/default_logo.svg'}
+                          src={orgLogoMap[row.org] || `${prefix}/default_logo.svg`}
                           alt={`${row.org} Logo`}
                           sx={{
                             height: 20,
@@ -573,7 +575,7 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
             </Typography>
             {/* 加上图片 */}
             <Box sx={{ display: 'flex', justifyContent: 'center', mb: 4 }}>
-              <img src="/openrca_leadboard/overview.png" alt="OpenRCA Task" style={{ maxWidth: '100%', height: 'auto' }} />
+              <img src={`${prefix}/overview.png`} alt="OpenRCA Task" style={{ maxWidth: '100%', height: 'auto' }} />
             </Box>
             <Typography 
               variant="body1" 
@@ -612,7 +614,7 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
                 textAlign: 'center'
               }}
             >
-              OPENRCA: CAN LARGE LANGUAGE MODELS LOCATE THE ROOT CAUSE OF SOFTWARE FAILURES?
+              OPENRCA: Can Large Language Models Locate the Root Cause of Software Failures?
             </Typography>
 
             <Box sx={{ mb: 3, textAlign: 'center' }}>
