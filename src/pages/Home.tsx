@@ -197,7 +197,7 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
               textAlign: 'center'
             }}
           >
-            OPENRCA: Can Large Language Models Locate the Root Cause of Software Failures?
+            OpenRCA: Can Large Language Models Locate the Root Cause of Software Failures?
           </Typography>
           <Typography 
             variant="subtitle1" 
@@ -208,14 +208,16 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
               textAlign: 'center'
             }}
           >
-            OpenRCA includes 335 failures from three enterprise software systems, along with over 68 GB of telemetry data (logs, metrics, and traces). Given a failure case and its associated telemetry, the LLM is tasked to identify the root cause that triggered the failure, requiring comprehension of software dependencies and reasoning over heterogeneous, long-context telemetry data.
+            OpenRCA includes 335 failures from three enterprise software systems, along with over 68 GB of telemetry data (logs, metrics, and traces). Given a failure case and its associated telemetry, the LLM is tasked to identify the root cause of the failure, requiring comprehension of software dependencies and reasoning over heterogeneous, long-context telemetry data.
           <Box sx={{ 
             display: 'flex', 
             justifyContent: 'center', 
             alignItems: 'center', 
             gap: 2,
             mt: -1,
-            mb: 1 
+            mb: 1 ,
+            ml: 2,
+            zIndex: -1
           }}>
             <Box
               component="img"
@@ -244,7 +246,8 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
                 transition: 'transform 0.2s',
                 '&:hover': {
                   transform: 'scale(1.05)'
-                }
+                },
+                zIndex: 1000
               }}
             />
             <Box
@@ -259,7 +262,8 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
                 transition: 'transform 0.2s',
                 '&:hover': {
                   transform: 'scale(1.05)'
-                }
+                },
+                marginLeft: '-1vw'
               }}
             />
           </Box>
@@ -614,7 +618,7 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
                 textAlign: 'center'
               }}
             >
-              OPENRCA: Can Large Language Models Locate the Root Cause of Software Failures?
+              OpenRCA: Can Large Language Models Locate the Root Cause of Software Failures?
             </Typography>
 
             <Box sx={{ mb: 3, textAlign: 'center' }}>
