@@ -88,7 +88,6 @@ const Home = () => {
 
   // 找出最高值
   const maxCorrect = Math.max(...filteredAndSortedData.map(row => parseFloat(row.correct)));
-  const maxPartial = Math.max(...filteredAndSortedData.map(row => parseFloat(row.partial)));
 
   const headCells: Array<{
     id: keyof Data;
@@ -159,7 +158,6 @@ const Home = () => {
     },
     { id: 'org', label: 'Org.', width: '15%', sortable: false },
     { id: 'correct', label: 'Correct', width: '15%', sortable: true },
-    { id: 'partial', label: 'Partial', width: '15%', sortable: true },
     { id: 'date', label: 'Date', width: '10%', sortable: true },
   ];
 
@@ -429,7 +427,7 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {filteredAndSortedData.map((row, index) => (
+                  {filteredAndSortedData.map((row) => (
                     <TableRow 
                       key={row.name + row.model}
                       sx={{ 
@@ -477,16 +475,6 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
                         }}
                       >
                         {row.correct}
-                      </TableCell>
-                      <TableCell 
-                        sx={{ 
-                          width: '15%', 
-                          textAlign: 'center',
-                          fontWeight: parseFloat(row.partial) === maxPartial ? 600 : 'inherit',
-                          color: parseFloat(row.partial) === maxPartial ? '#1976d2' : 'inherit'
-                        }}
-                      >
-                        {row.partial}
                       </TableCell>
                       <TableCell sx={{ width: '10%', textAlign: 'center' }}>{row.date}</TableCell>
                     </TableRow>
