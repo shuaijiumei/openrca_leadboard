@@ -37,8 +37,8 @@ export const news = [
     date: '2026/1/17',
     content: "🎉🎉🎉 Anthropic's Claude 4.5 Opus + Claude Agent SDK & SRE Tool MCP achieves SOTA"
   },
-  { date: '2025/1/23', content: 'Our paper has been accepted by ICLR 2025.' },
-  { date: '2025/1/23', content: 'Released OpenRCA dataset with 335 failure cases.' }
+  { date: '2025/12/22', content: 'Our AIOps dataset study paper has been accepted by FSE 2026.' },
+  { date: '2025/1/23', content: 'Our OpenRCA benchmark paper has been accepted by ICLR 2025.' }
 ];
 
 // 模型数据

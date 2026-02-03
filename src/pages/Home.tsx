@@ -193,6 +193,12 @@ author={Junjielong Xu and Qinan Zhang and Zhiqing Zhong and Shilin He and Chaoyu
 booktitle={The Thirteenth International Conference on Learning Representations},
 year={2025},
 url={https://openreview.net/forum?id=M4qNIzQYpd}
+},
+@article{fang2025rethinking,
+  title={Rethinking the Evaluation of Microservice RCA with a Fault Propagation-Aware Benchmark},
+  author={Fang, Aoyang and Zhang, Songhan and Yang, Yifan and Wu, Haotong and Xu, Junjielong and Wang, Xuyang and Wang, Rui and Wang, Manyi and Lu, Qisheng and He, Pinjia},
+  journal={arXiv preprint arXiv:2510.04711},
+  year={2025}
 }`;
     navigator.clipboard.writeText(citationText);
     setOpenSnackbarCite(true);
@@ -450,7 +456,7 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
                   boxShadow: filterRcaAgent ? '0 10px 20px rgba(124, 58, 237, 0.25)' : 'none'
                 }}
               >
-                python-only*
+                Python-only*
               </AntButton>
               <AntButton
                 type={filterFrameworkOpen ? 'primary' : 'default'}
@@ -507,7 +513,7 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
                 mb: 1.5
               }}
             >
-              * python-only denotes the open-source agent introduced in our paper.
+              * Python-only denotes the RCA-Agent introduced in our paper.
             </Typography>
             
             <TableContainer 
@@ -862,44 +868,6 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
               Each OpenRCA task is based on a real-world failure case from a software system and its associated telemetry data. Given the failure case and its associated telemetry, the task is to identify the root cause of the failure, requiring comprehension of software dependencies and reasoning over heterogeneous, long-context telemetry data.
             </Typography>
 
-          
-
-            <Typography 
-              variant="h5" 
-              sx={{
-                color: '#2c3e50',
-                fontWeight: 600,
-                mb: 3,
-                mt: 6,
-                textAlign: 'left',
-                marginTop: '15vh'
-              }}
-            >
-              Check out our paper for more details!
-            </Typography>
-            
-            <Typography 
-              variant="h6" 
-              sx={{ 
-                color: '#2c3e50',
-                fontWeight: 500,
-                mb: 2,
-                textAlign: 'center'
-              }}
-            >
-              OpenRCA: Can Large Language Models Locate the Root Cause of Software Failures?
-            </Typography>
-
-            <Box sx={{ mb: 3, textAlign: 'center' }}>
-              <Typography variant="body1" sx={{ color: '#424242' }}>
-              Junjielong Xu<sup>1,2</sup>, Qinan Zhang<sup>1</sup>, Zhiqing Zhong<sup>1</sup>, Shilin He<sup>2</sup>, Chaoyun Zhang<sup>2</sup>, Qingwei Lin<sup>2</sup>, Dan Pei<sup>3</sup>, Pinjia He<sup>1</sup>, Dongmei Zhang<sup>2</sup>, Qi Zhang<sup>2</sup>
-              </Typography>
-              <Typography variant="body2" sx={{ color: '#666', mt: 1 }}>
-                <sup>1</sup>School of Data Science, The Chinese University of Hong Kong, Shenzhen <sup>2</sup>Microsoft <sup>3</sup>Tsinghua University
-                <br></br>
-              </Typography>
-            </Box>
-
             <Box sx={{ display: 'flex', gap: 2, mb: 4, justifyContent: 'center' }}>
               <Space size="middle">
                 <AntButton
@@ -941,7 +909,7 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
                 mt: 6
               }}
             >
-              Citing this work
+              Citing our works
             </Typography>
             <Typography 
               variant="body1" 
@@ -950,7 +918,7 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
                 mb: 2
               }}
             >
-              If you use this benchmark, please cite:
+              If you are interested in our works, please cite:
             </Typography>
             <Paper 
               sx={{ 
@@ -1014,6 +982,25 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
   <br></br>
   <span>     </span>
   <span className="field">url</span>=&#123;<span className="value">https://openreview.net/forum?id=M4qNIzQYpd</span>&#125;
+  <br></br>
+&#125;,
+<br></br>
+<span className="bibtex">@article</span>&#123;<span className="identifier">fang2025rethinking</span>,
+<br></br>
+<span>  </span>
+  <span className="field">title</span>=&#123;<span className="value">Rethinking the Evaluation of Microservice RCA with a Fault Propagation-Aware Benchmark</span>&#125;,
+  <br></br>
+  <span>  </span>
+  <span className="field">author</span>=&#123;<span className="value">Fang, Aoyang and Zhang, Songhan and Yang, Yifan and Wu, Haotong and Xu, Junjielong and Wang, Xuyang and</span>
+  <br></br>
+  <span>           </span>
+  <span className="value">Wang, Rui and Wang, Manyi and Lu, Qisheng and He, Pinjia</span>&#125;,
+  <br></br>
+  <span>  </span>
+  <span className="field">journal</span>=&#123;<span className="value">arXiv preprint arXiv:2510.04711</span>&#125;,
+  <br></br>
+  <span>  </span>
+  <span className="field">year</span>=&#123;<span className="value">2025</span>&#125;
   <br></br>
 &#125;</pre>
             </Paper>
