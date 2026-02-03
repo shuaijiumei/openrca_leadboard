@@ -1,4 +1,5 @@
-import { Box, Typography, Container, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TableSortLabel, Button, IconButton, Snackbar, Chip, Menu, MenuItem, Checkbox, ListItemText } from '@mui/material';
+import { Box, Typography, Container, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TableSortLabel, IconButton, Snackbar, Chip, Menu, MenuItem, Checkbox, ListItemText } from '@mui/material';
+import { Button as AntButton, Space } from 'antd';
 import { useState } from 'react';
 import EmailIcon from '@mui/icons-material/Email';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
@@ -6,7 +7,8 @@ import DescriptionIcon from '@mui/icons-material/Description';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import FilterListIcon from '@mui/icons-material/FilterList';
-import { Data, modelColorMap, orgLogoMap, news, modelData } from '../data/modelData';
+import LinkIcon from '@mui/icons-material/Link';
+import { Data, modelColorMap, orgLogoMap, news, modelDataOpenRCA, modelDataOpenRCA2 } from '../data/modelData';
 
 type Order = 'asc' | 'desc';
 
@@ -48,6 +50,11 @@ const Home = () => {
   const [openSnackbarMail, setOpenSnackbarMail] = useState(false);
   const [selectedModels, setSelectedModels] = useState<string[]>(Object.keys(modelColorMap));
   const [modelFilterAnchor, setModelFilterAnchor] = useState<null | HTMLElement>(null);
+  const [filterAll, setFilterAll] = useState(true);
+  const [filterRcaAgent, setFilterRcaAgent] = useState(false);
+  const [filterFrameworkOpen, setFilterFrameworkOpen] = useState(false);
+  const [filterModelOpen, setFilterModelOpen] = useState(false);
+  const [activeDataset, setActiveDataset] = useState<'OpenRCA' | 'OpenRCA 2.0'>('OpenRCA');
 
   const handleRequestSort = (property: keyof Data) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -82,12 +89,26 @@ const Home = () => {
   };
 
   // 过滤数据
-  const filteredAndSortedData = [...modelData]
+  const activeData = activeDataset === 'OpenRCA' ? modelDataOpenRCA : modelDataOpenRCA2;
+
+  const isSpecificTagActive = filterRcaAgent || filterFrameworkOpen || filterModelOpen;
+
+  const filteredAndSortedData = [...activeData]
     .filter(row => selectedModels.includes(row.model))
+    .filter(row => {
+      if (!filterAll && isSpecificTagActive) {
+        if (filterRcaAgent && row.name !== 'RCA-Agent') return false;
+        if (filterFrameworkOpen && !row.frameworkOpen) return false;
+        if (filterModelOpen && !row.modelOpen) return false;
+      }
+      return true;
+    })
     .sort(getComparator(order, orderBy));
 
   // 找出最高值
-  const maxCorrect = Math.max(...filteredAndSortedData.map(row => parseFloat(row.correct)));
+  const maxCorrect = filteredAndSortedData.length > 0
+    ? Math.max(...filteredAndSortedData.map(row => parseFloat(row.correct)))
+    : 0;
 
   const headCells: Array<{
     id: keyof Data;
@@ -95,7 +116,7 @@ const Home = () => {
     width: string;
     sortable: boolean;
   }> = [
-    { id: 'name', label: 'Method Name', width: '25%', sortable: false },
+    { id: 'name', label: 'Method Name', width: '22%', sortable: false },
     { 
       id: 'model', 
       label: (
@@ -153,12 +174,15 @@ const Home = () => {
           </Menu>
         </Box>
       ),
-      width: '20%',
+      width: '18%',
       sortable: false 
     },
-    { id: 'org', label: 'Org.', width: '15%', sortable: false },
-    { id: 'correct', label: 'Correct', width: '15%', sortable: true },
-    { id: 'date', label: 'Date', width: '10%', sortable: true },
+    { id: 'org', label: 'Org.', width: '10%', sortable: false },
+    { id: 'frameworkOpen', label: 'Scaffold Open', width: '11%', sortable: false },
+    { id: 'modelOpen', label: 'Model Open', width: '11%', sortable: false },
+    { id: 'trajUrl', label: 'Traj.', width: '8%', sortable: false },
+    { id: 'correct', label: 'Correct', width: '11%', sortable: true },
+    { id: 'date', label: 'Date', width: '9%', sortable: true },
   ];
 
   const handleCopyClick = () => {
@@ -321,18 +345,169 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
             p: 3,
             boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)'
           }}>
-            <Typography 
-              variant="h5" 
-              sx={{ 
-                mb: 2, 
-                background: 'linear-gradient(45deg, #2196F3 30%, #1565C0 90%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                fontWeight: 600,
-                textAlign: 'center'
+            <Box sx={{ display: 'flex', justifyContent: 'center', mb: 2.5 }}>
+              <Space.Compact>
+                <AntButton
+                  size="large"
+                  type={activeDataset === 'OpenRCA' ? 'primary' : 'default'}
+                  onClick={() => setActiveDataset('OpenRCA')}
+                  style={{
+                    padding: '8px 22px',
+                    fontSize: '1rem',
+                    fontWeight: 700,
+                    borderColor: activeDataset === 'OpenRCA' ? '#1565C0' : '#cbd5e1',
+                    background: activeDataset === 'OpenRCA'
+                      ? 'linear-gradient(135deg, #1d4ed8 0%, #0ea5e9 100%)'
+                      : '#ffffff',
+                    color: activeDataset === 'OpenRCA' ? '#ffffff' : '#0f172a',
+                    boxShadow: activeDataset === 'OpenRCA'
+                      ? '0 10px 24px rgba(14, 116, 211, 0.35)'
+                      : '0 6px 16px rgba(15, 23, 42, 0.08)'
+                  }}
+                >
+                  OpenRCA 1.0 Leaderboard
+                </AntButton>
+                <AntButton
+                  size="large"
+                  type={activeDataset === 'OpenRCA 2.0' ? 'primary' : 'default'}
+                  onClick={() => setActiveDataset('OpenRCA 2.0')}
+                  style={{
+                    padding: '8px 22px',
+                    fontSize: '1rem',
+                    fontWeight: 700,
+                    borderColor: activeDataset === 'OpenRCA 2.0' ? '#7c3aed' : '#cbd5e1',
+                    background: activeDataset === 'OpenRCA 2.0'
+                      ? 'linear-gradient(135deg, #7c3aed 0%, #ec4899 100%)'
+                      : '#ffffff',
+                    color: activeDataset === 'OpenRCA 2.0' ? '#ffffff' : '#0f172a',
+                    boxShadow: activeDataset === 'OpenRCA 2.0'
+                      ? '0 10px 24px rgba(124, 58, 237, 0.35)'
+                      : '0 6px 16px rgba(15, 23, 42, 0.08)'
+                  }}
+                >
+                  OpenRCA 2.0 Leaderboard
+                </AntButton>
+              </Space.Compact>
+            </Box>
+
+            <Typography
+              variant="body2"
+              sx={{
+                textAlign: 'center',
+                color: '#4b5563',
+                mb: 1
               }}
             >
-              Leaderboard
+              Use the tags below to filter results. The table also indicates whether the scaffold and model are open-source.
+            </Typography>
+
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'flex-start',
+                gap: 1.5,
+                flexWrap: 'wrap',
+                mb: 2
+              }}
+            >
+              <AntButton
+                type={filterAll ? 'primary' : 'default'}
+                onClick={() => {
+                  setFilterAll(true);
+                  setFilterRcaAgent(false);
+                  setFilterFrameworkOpen(false);
+                  setFilterModelOpen(false);
+                }}
+                style={{
+                  borderRadius: 12,
+                  padding: '6px 18px',
+                  fontWeight: 600,
+                  backgroundColor: filterAll ? '#7c3aed' : '#ffffff',
+                  borderColor: filterAll ? '#7c3aed' : '#dbe4f3',
+                  color: filterAll ? '#ffffff' : '#475569',
+                  boxShadow: filterAll ? '0 10px 20px rgba(124, 58, 237, 0.25)' : 'none'
+                }}
+              >
+                All
+              </AntButton>
+              <AntButton
+                type={filterRcaAgent ? 'primary' : 'default'}
+                onClick={() => {
+                  const nextRca = !filterRcaAgent;
+                  const nextFramework = filterFrameworkOpen;
+                  const nextModel = filterModelOpen;
+                  const anySpecific = nextRca || nextFramework || nextModel;
+                  setFilterAll(!anySpecific);
+                  setFilterRcaAgent(nextRca);
+                }}
+                style={{
+                  borderRadius: 12,
+                  padding: '6px 18px',
+                  fontWeight: 600,
+                  backgroundColor: filterRcaAgent ? '#7c3aed' : '#ffffff',
+                  borderColor: filterRcaAgent ? '#7c3aed' : '#dbe4f3',
+                  color: filterRcaAgent ? '#ffffff' : '#475569',
+                  boxShadow: filterRcaAgent ? '0 10px 20px rgba(124, 58, 237, 0.25)' : 'none'
+                }}
+              >
+                python-only*
+              </AntButton>
+              <AntButton
+                type={filterFrameworkOpen ? 'primary' : 'default'}
+                onClick={() => {
+                  const nextRca = filterRcaAgent;
+                  const nextFramework = !filterFrameworkOpen;
+                  const nextModel = filterModelOpen;
+                  const anySpecific = nextRca || nextFramework || nextModel;
+                  setFilterAll(!anySpecific);
+                  setFilterFrameworkOpen(nextFramework);
+                }}
+                style={{
+                  borderRadius: 12,
+                  padding: '6px 18px',
+                  fontWeight: 600,
+                  backgroundColor: filterFrameworkOpen ? '#10b981' : '#ffffff',
+                  borderColor: filterFrameworkOpen ? '#10b981' : '#dbe4f3',
+                  color: filterFrameworkOpen ? '#ffffff' : '#475569',
+                  boxShadow: filterFrameworkOpen ? '0 10px 20px rgba(16, 185, 129, 0.25)' : 'none'
+                }}
+              >
+                Scaffold Open
+              </AntButton>
+              <AntButton
+                type={filterModelOpen ? 'primary' : 'default'}
+                onClick={() => {
+                  const nextRca = filterRcaAgent;
+                  const nextFramework = filterFrameworkOpen;
+                  const nextModel = !filterModelOpen;
+                  const anySpecific = nextRca || nextFramework || nextModel;
+                  setFilterAll(!anySpecific);
+                  setFilterModelOpen(nextModel);
+                }}
+                style={{
+                  borderRadius: 12,
+                  padding: '6px 18px',
+                  fontWeight: 600,
+                  backgroundColor: filterModelOpen ? '#f59e0b' : '#ffffff',
+                  borderColor: filterModelOpen ? '#f59e0b' : '#dbe4f3',
+                  color: filterModelOpen ? '#ffffff' : '#475569',
+                  boxShadow: filterModelOpen ? '0 10px 20px rgba(245, 158, 11, 0.25)' : 'none'
+                }}
+              >
+                Model Open
+              </AntButton>
+            </Box>
+
+            <Typography
+              variant="caption"
+              sx={{
+                display: 'block',
+                textAlign: 'left',
+                color: '#6b7280',
+                mb: 1.5
+              }}
+            >
+              * python-only denotes the open-source agent introduced in our paper.
             </Typography>
             
             <TableContainer 
@@ -435,10 +610,10 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
                         backgroundColor: row.model.includes('*') ? 'rgba(0, 0, 0, 0.02)' : 'inherit'
                       }}
                     >
-                      <TableCell sx={{ width: '25%', textAlign: 'center', fontWeight: 600 }}>
+                      <TableCell sx={{ width: '22%', textAlign: 'center', fontWeight: 600 }}>
                         {row.name}
                       </TableCell>
-                      <TableCell sx={{ width: '20%', textAlign: 'center' }}>
+                      <TableCell sx={{ width: '18%', textAlign: 'center' }}>
                         <Chip 
                           label={row.model}
                           size="small"
@@ -452,7 +627,7 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
                           }}
                         />
                       </TableCell>
-                      <TableCell sx={{ width: '15%', textAlign: 'center' }}>
+                      <TableCell sx={{ width: '10%', textAlign: 'center' }}>
                         <Box
                           component="img"
                           src={orgLogoMap[row.org] || `${prefix}/default_logo.svg`}
@@ -466,9 +641,53 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
                           }}
                         />
                       </TableCell>
+                      <TableCell sx={{ width: '12%', textAlign: 'center' }}>
+                        <Chip
+                          label={row.frameworkOpen ? 'Open' : 'Closed'}
+                          size="small"
+                          sx={{
+                            backgroundColor: row.frameworkOpen ? '#dcfce7' : '#fee2e2',
+                            color: row.frameworkOpen ? '#166534' : '#991b1b',
+                            fontWeight: 600,
+                            border: `1px solid ${row.frameworkOpen ? '#86efac' : '#fecaca'}`
+                          }}
+                        />
+                      </TableCell>
+                      <TableCell sx={{ width: '12%', textAlign: 'center' }}>
+                        <Chip
+                          label={row.modelOpen ? 'Open' : 'Closed'}
+                          size="small"
+                          sx={{
+                            backgroundColor: row.modelOpen ? '#e0f2fe' : '#fee2e2',
+                            color: row.modelOpen ? '#075985' : '#991b1b',
+                            fontWeight: 600,
+                            border: `1px solid ${row.modelOpen ? '#7dd3fc' : '#fecaca'}`
+                          }}
+                        />
+                      </TableCell>
+                      <TableCell sx={{ width: '8%', textAlign: 'center' }}>
+                        {row.trajUrl ? (
+                          <IconButton
+                            size="small"
+                            component="a"
+                            href={row.trajUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            sx={{
+                              color: '#2563eb',
+                              backgroundColor: 'rgba(37, 99, 235, 0.08)',
+                              '&:hover': { backgroundColor: 'rgba(37, 99, 235, 0.16)' }
+                            }}
+                          >
+                            <LinkIcon fontSize="small" />
+                          </IconButton>
+                        ) : (
+                          <Typography variant="body2" sx={{ color: '#94a3b8' }}>—</Typography>
+                        )}
+                      </TableCell>
                       <TableCell 
                         sx={{ 
-                          width: '15%', 
+                          width: '11%', 
                           textAlign: 'center',
                           fontWeight: parseFloat(row.correct) === maxCorrect ? 600 : 'inherit',
                           color: parseFloat(row.correct) === maxCorrect ? '#1976d2' : 'inherit'
@@ -476,7 +695,7 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
                       >
                         {row.correct}
                       </TableCell>
-                      <TableCell sx={{ width: '10%', textAlign: 'center' }}>{row.date}</TableCell>
+                      <TableCell sx={{ width: '9%', textAlign: 'center' }}>{row.date}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -498,24 +717,22 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
             <Typography variant="h6" sx={{ fontWeight: 500 }}>
               Is your model or agent up to the challenge? Submit your results here!
             </Typography>
-            <Box sx={{ display: 'flex', gap: 2 }}>
-              <Button
-                variant="contained"
-                startIcon={<EmailIcon />}
+            <Space size="middle">
+              <AntButton
+                type="default"
+                icon={<EmailIcon />}
                 onClick={() => {
                   navigator.clipboard.writeText('openrcanon@gmail.com');
                   setOpenSnackbarMail(true);
                 }}
-                sx={{
+                style={{
                   backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                  color: 'white',
-                  '&:hover': {
-                    backgroundColor: 'rgba(255, 255, 255, 0.2)',
-                  }
+                  color: '#ffffff',
+                  borderColor: 'rgba(255, 255, 255, 0.3)'
                 }}
               >
                 Contact
-              </Button>
+              </AntButton>
               <Snackbar
                 open={openSnackbarMail}
                 autoHideDuration={3000}
@@ -523,22 +740,18 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
                 message="Mail has been copied to clipboard!"
                 anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
               />
-              <Button
-                variant="contained"
-                startIcon={<FileUploadIcon />}
-                component="a"
+              <AntButton
+                type="primary"
+                icon={<FileUploadIcon />}
                 href="mailto:openrcanon@gmail.com"
-                sx={{
+                style={{
                   backgroundColor: '#000000',
-                  color: 'white',
-                  '&:hover': {
-                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                  }
+                  borderColor: '#000000'
                 }}
               >
                 Submit
-              </Button>
-            </Box>
+              </AntButton>
+            </Space>
           </Box>
 
           {/* 提交须知 */}
@@ -688,32 +901,24 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
             </Box>
 
             <Box sx={{ display: 'flex', gap: 2, mb: 4, justifyContent: 'center' }}>
-              <Button
-                variant="contained"
-                startIcon={<DescriptionIcon />}
-                href="https://iclr.cc/virtual/2025/poster/32093"
-                sx={{
-                  backgroundColor: '#1565C0',
-                  '&:hover': {
-                    backgroundColor: '#1976D2',
-                  }
-                }}
-              >
-                Paper
-              </Button>
-              <Button
-                variant="contained"
-                startIcon={<GitHubIcon />}
-                href="https://github.com/microsoft/OpenRCA"
-                sx={{
-                  backgroundColor: '#2c3e50',
-                  '&:hover': {
-                    backgroundColor: '#34495e',
-                  }
-                }}
-              >
-                Code
-              </Button>
+              <Space size="middle">
+                <AntButton
+                  type="primary"
+                  icon={<DescriptionIcon />}
+                  href="https://iclr.cc/virtual/2025/poster/32093"
+                  style={{ backgroundColor: '#1565C0', borderColor: '#1565C0' }}
+                >
+                  Paper
+                </AntButton>
+                <AntButton
+                  type="default"
+                  icon={<GitHubIcon />}
+                  href="https://github.com/microsoft/OpenRCA"
+                  style={{ backgroundColor: '#2c3e50', color: '#ffffff', borderColor: '#2c3e50' }}
+                >
+                  Code
+                </AntButton>
+              </Space>
             </Box>
 
             <Typography 
