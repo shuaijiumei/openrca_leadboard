@@ -3,14 +3,17 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://github.com/shuaijiumei/openrca_leadboard",
+  "homepage": "https://github.com/siyuexi/openrca_leadboard",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
+    "deploy": "gh-pages -d dist",
+    "build:openrca": "tsc && vite build --base=/OpenRCA/",
+    "deploy:microsoft:ssh": "npm run build:openrca && gh-pages -d dist -b gh-pages -r git@github.com:microsoft/OpenRCA.git",
+    "deploy:microsoft:https": "npm run build:openrca && gh-pages -d dist -b gh-pages -r https://$GH_USERNAME:$GH_TOKEN@github.com/microsoft/OpenRCA.git"
   },
   "dependencies": {
     "@emotion/react": "^11.11.3",

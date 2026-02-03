@@ -10,7 +10,7 @@ import { Data, modelColorMap, orgLogoMap, news, modelData } from '../data/modelD
 
 type Order = 'asc' | 'desc';
 
-const prefix = '/openrca_leadboard'
+const prefix = import.meta.env.BASE_URL.replace(/\/$/, '')
 
 // 比较函数
 function getComparator(order: Order, orderBy: keyof Data) {

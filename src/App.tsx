@@ -17,10 +17,10 @@ const theme = createTheme({
 function App() {
   return (
     <ThemeProvider theme={theme}>
-      <Router>
+      <Router basename={import.meta.env.BASE_URL}>
         <Layout>
           <Routes>
-            <Route path="/openrca_leadboard/" element={<Home />} />
+            <Route path="/" element={<Home />} />
             {/* Add more routes as needed */}
           </Routes>
         </Layout>

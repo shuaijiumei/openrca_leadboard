@@ -11,7 +11,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       <AppBar position="static" sx={{ backgroundColor: 'white', boxShadow: 'none' }}>
         <Toolbar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1, color: 'black' }}>
-            <Link to="/openrca_leadboard/" style={{ textDecoration: 'none', color: 'inherit' }}>
+            <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
               OpenRCA
             </Link>
           </Typography>

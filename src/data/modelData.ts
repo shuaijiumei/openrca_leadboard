@@ -6,7 +6,7 @@ export interface Data {
   date: string;
 }
 
-const prefix = '/openrca_leadboard'
+const prefix = import.meta.env.BASE_URL.replace(/\/$/, '')
 
 // 模型颜色映射
 export const modelColorMap: { [key: string]: { color: string, backgroundColor: string } } = {
@@ -31,7 +31,7 @@ export const orgLogoMap: { [key: string]: string } = {
 // 新闻数据
 export const news = [
   {
-    date: '2026/1/217',
+    date: '2026/1/17',
     content: "🎉🎉🎉 Anthropic's Claude 4.5 Opus + Claude Agent SDK & SRE Tool MCP achieves SOTA"
   },
   { date: '2025/1/23', content: 'Our paper has been accepted by ICLR 2025.' },
