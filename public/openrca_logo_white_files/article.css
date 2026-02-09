@@ -1,0 +1,310 @@
+/**
+ * Article/Content styles for long-form content
+ * Used by apps with documentation/article sections
+ */
+
+/* ========== Long Content ========== */
+.long {
+  padding: 1em 0 2em 0;
+  line-height: 1.4;
+  font-size: 1.07em;
+}
+
+.long h1 {
+  font-size: 1.4em;
+  text-align: left;
+  color: var(--color-dark);
+  border-bottom: 2px solid #F2F2F2;
+}
+
+.long h2 {
+  font-size: 1.2em;
+  text-align: left;
+  color: var(--color-dark);
+}
+
+.long p {
+  margin: 1em 0 1em 0;
+}
+
+.long ul {
+  display: block;
+  list-style-type: disc;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  padding-inline-start: 40px;
+  font-size: 1.07em;
+}
+
+.long li {
+  margin: 0.5em 0;
+}
+
+.long ol {
+  display: block;
+  list-style-type: decimal;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  padding-inline-start: 40px;
+}
+
+.long h3 {
+  font-size: 1.1em;
+  margin-top: 1.5em;
+  color: var(--color-dark);
+}
+
+.long code {
+  background: #f4f4f4;
+  padding: 0.15em 0.4em;
+  border-radius: 4px;
+  font-size: 0.9em;
+  font-family: monospace;
+}
+
+.long section {
+  margin: 2em 0;
+  padding-top: 1em;
+  border-top: 1px solid #eee;
+}
+
+.long section:first-of-type {
+  border-top: none;
+  margin-top: 0;
+}
+
+/* ========== Table of Contents ========== */
+.article__toc {
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  padding: 1.25em 1.5em;
+  margin: 1.5em 0;
+}
+
+.article__toc h3 {
+  margin: 0 0 0.75em 0;
+  font-size: 1em;
+  color: var(--color-dark);
+}
+
+.article__toc ol {
+  margin: 0;
+  padding-left: 1.25em;
+  columns: 2;
+  column-gap: 2em;
+}
+
+.article__toc li {
+  margin: 0.35em 0;
+  font-size: 0.95em;
+}
+
+.article__toc a {
+  color: var(--color-blue);
+  text-decoration: none;
+}
+
+.article__toc a:hover {
+  text-decoration: underline;
+}
+
+/* ========== Highlight Boxes ========== */
+.article__highlight {
+  background: linear-gradient(135deg, #e8f4fd 0%, #d1e8fa 100%);
+  border-left: 4px solid #2a73d9;
+  padding: 1em 1.25em;
+  margin: 1.5em 0;
+  border-radius: 0 8px 8px 0;
+}
+
+.article__highlight strong {
+  color: #1a5bb5;
+}
+
+.article__tip {
+  background: linear-gradient(135deg, #e8f8e8 0%, #d4f0d4 100%);
+  border-left: 4px solid #28a745;
+  padding: 1em 1.25em;
+  margin: 1.5em 0;
+  border-radius: 0 8px 8px 0;
+}
+
+.article__tip strong {
+  color: #1e7e34;
+}
+
+.article__warning {
+  background: linear-gradient(135deg, #fff8e6 0%, #ffecb3 100%);
+  border-left: 4px solid #ffc107;
+  padding: 1em 1.25em;
+  margin: 1.5em 0;
+  border-radius: 0 8px 8px 0;
+}
+
+.article__warning strong {
+  color: #d39e00;
+}
+
+.article__example {
+  background: linear-gradient(135deg, #f5f0ff 0%, #ebe0ff 100%);
+  border-left: 4px solid #7c4dff;
+  padding: 1em 1.25em;
+  margin: 1.5em 0;
+  border-radius: 0 8px 8px 0;
+}
+
+.article__example h4 {
+  margin: 0 0 0.5em 0;
+  color: #5e35b1;
+  font-size: 1em;
+}
+
+/* ========== Tables ========== */
+.article__table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5em 0;
+  font-size: 0.95em;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.article__table thead {
+  background: #f8f9fa;
+}
+
+.article__table th {
+  padding: 0.85em 1em;
+  text-align: left;
+  font-weight: 600;
+  color: var(--color-dark);
+  border-bottom: 2px solid #dee2e6;
+}
+
+.article__table td {
+  padding: 0.75em 1em;
+  border-bottom: 1px solid #e9ecef;
+  vertical-align: top;
+}
+
+.article__table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.article__table tbody tr:hover {
+  background: #f8f9fa;
+}
+
+.article__table_colored thead {
+  background: linear-gradient(135deg, #2a73d9 0%, #1a5bb5 100%);
+}
+
+.article__table_colored th {
+  color: #fff;
+  border-bottom: none;
+}
+
+.article__table_colored tbody tr:nth-child(odd) {
+  background: #f8fbff;
+}
+
+.article__table_colored tbody tr:nth-child(even) {
+  background: #fff;
+}
+
+.article__table_colored tbody tr:hover {
+  background: #e8f4fd;
+}
+
+/* ========== Article Images ========== */
+.article__image {
+  margin: 1.5em 0;
+  text-align: center;
+}
+
+.article__image img {
+  max-width: 75%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.article__image figcaption {
+  font-size: 0.85em;
+  color: #666;
+  margin-top: 0.5em;
+}
+
+/* ========== Call to Action ========== */
+.article__cta {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-radius: 12px;
+  padding: 1.5em;
+  margin-top: 2em;
+  text-align: center;
+}
+
+.article__cta h2 {
+  margin-top: 0;
+}
+
+.article__cta p {
+  margin-bottom: 0;
+}
+
+/* ========== Terms Page ========== */
+.terms-page {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 2em 1em;
+}
+
+.terms-page h1 {
+  font-size: 1.5em;
+  margin-bottom: 1em;
+  color: var(--color-dark);
+}
+
+.terms-page p {
+  margin: 1em 0;
+  font-size: 0.95em;
+  line-height: 1.5;
+  color: var(--color-text);
+}
+
+.terms-page h2 {
+  font-size: 1.1em;
+  margin: 1.5em 0 0.5em;
+  color: var(--color-dark);
+}
+
+.terms-page a {
+  color: var(--color-primary);
+}
+
+/* ========== Responsive ========== */
+@media screen and (max-width: 768px) {
+  .article__toc ol {
+    columns: 1;
+  }
+
+  .article__table {
+    font-size: 0.85em;
+  }
+
+  .article__table th,
+  .article__table td {
+    padding: 0.5em 0.6em;
+  }
+
+  .long section {
+    overflow-x: auto;
+  }
+}

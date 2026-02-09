@@ -8,44 +8,51 @@ import GitHubIcon from '@mui/icons-material/GitHub';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import LinkIcon from '@mui/icons-material/Link';
-import { Data, modelColorMap, orgLogoMap, news, modelDataOpenRCA, modelDataOpenRCA2 } from '../data/modelData';
+import { Data, DataOpenRCA2, modelColorMap, orgLogoMap, news, modelDataOpenRCA, modelDataOpenRCA2 } from '../data/modelData';
 
 type Order = 'asc' | 'desc';
+type OrderByOpenRCA = keyof Data;
+type OrderByOpenRCA2 = keyof DataOpenRCA2;
 
 const prefix = import.meta.env.BASE_URL.replace(/\/$/, '')
 
 // 比较函数
-function getComparator(order: Order, orderBy: keyof Data) {
-  return (a: Data, b: Data) => {
-    // 处理百分比字符串和日期
-    const getValue = (value: string) => {
-      if (value.endsWith('%')) {
-        return parseFloat(value.slice(0, -1)); // 移除%并转换为数字
+function getComparator<T extends Record<string, unknown>>(order: Order, orderBy: keyof T) {
+  return (a: T, b: T) => {
+    const getValue = (value: unknown) => {
+      if (typeof value === 'string') {
+        if (value.endsWith('%')) {
+          return parseFloat(value.slice(0, -1));
+        }
+        if (orderBy === 'date') {
+          return new Date(value).getTime();
+        }
+        return value;
       }
-      if (orderBy === 'date') {
-        return new Date(value).getTime();
+      if (typeof value === 'boolean') {
+        return value ? 1 : 0;
       }
-      return value;
+      return String(value ?? '');
     };
 
     const valueA = getValue(a[orderBy]);
     const valueB = getValue(b[orderBy]);
 
-    // 数字比较（包括百分比和日期）
     if (typeof valueA === 'number' && typeof valueB === 'number') {
       return order === 'desc' ? valueB - valueA : valueA - valueB;
     }
 
-    // 字符串比较
-    return order === 'desc' 
+    return order === 'desc'
       ? String(valueB).localeCompare(String(valueA))
       : String(valueA).localeCompare(String(valueB));
   };
 }
 
 const Home = () => {
-  const [order, setOrder] = useState<Order>('desc');
-  const [orderBy, setOrderBy] = useState<keyof Data>('correct');
+  const [orderOpenRCA, setOrderOpenRCA] = useState<Order>('desc');
+  const [orderByOpenRCA, setOrderByOpenRCA] = useState<OrderByOpenRCA>('correct');
+  const [orderOpenRCA2, setOrderOpenRCA2] = useState<Order>('desc');
+  const [orderByOpenRCA2, setOrderByOpenRCA2] = useState<OrderByOpenRCA2>('accuracy');
   const [openSnackbarCite, setOpenSnackbarCite] = useState(false);
   const [openSnackbarMail, setOpenSnackbarMail] = useState(false);
   const [selectedModels, setSelectedModels] = useState<string[]>(Object.keys(modelColorMap));
@@ -56,10 +63,16 @@ const Home = () => {
   const [filterModelOpen, setFilterModelOpen] = useState(false);
   const [activeDataset, setActiveDataset] = useState<'OpenRCA' | 'OpenRCA 2.0'>('OpenRCA');
 
-  const handleRequestSort = (property: keyof Data) => {
-    const isAsc = orderBy === property && order === 'asc';
-    setOrder(isAsc ? 'desc' : 'asc');
-    setOrderBy(property);
+  const handleRequestSortOpenRCA = (property: OrderByOpenRCA) => {
+    const isAsc = orderByOpenRCA === property && orderOpenRCA === 'asc';
+    setOrderOpenRCA(isAsc ? 'desc' : 'asc');
+    setOrderByOpenRCA(property);
+  };
+
+  const handleRequestSortOpenRCA2 = (property: OrderByOpenRCA2) => {
+    const isAsc = orderByOpenRCA2 === property && orderOpenRCA2 === 'asc';
+    setOrderOpenRCA2(isAsc ? 'desc' : 'asc');
+    setOrderByOpenRCA2(property);
   };
 
   const handleModelFilterClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -88,94 +101,110 @@ const Home = () => {
     }
   };
 
-  // 过滤数据
-  const activeData = activeDataset === 'OpenRCA' ? modelDataOpenRCA : modelDataOpenRCA2;
-
   const isSpecificTagActive = filterRcaAgent || filterFrameworkOpen || filterModelOpen;
 
-  const filteredAndSortedData = [...activeData]
-    .filter(row => selectedModels.includes(row.model))
-    .filter(row => {
+  const applyFilters = <T extends { model: string; name: string; frameworkOpen: boolean; modelOpen: boolean }>(rows: T[]) => (
+    rows
+      .filter(row => selectedModels.includes(row.model))
+      .filter(row => {
       if (!filterAll && isSpecificTagActive) {
         if (filterRcaAgent && row.name !== 'RCA-Agent') return false;
         if (filterFrameworkOpen && !row.frameworkOpen) return false;
         if (filterModelOpen && !row.modelOpen) return false;
       }
       return true;
-    })
-    .sort(getComparator(order, orderBy));
+      })
+  );
+
+  const filteredAndSortedDataOpenRCA = [...applyFilters(modelDataOpenRCA)]
+    .sort(getComparator(orderOpenRCA, orderByOpenRCA));
+
+  const filteredAndSortedDataOpenRCA2 = [...applyFilters(modelDataOpenRCA2)]
+    .sort(getComparator(orderOpenRCA2, orderByOpenRCA2));
 
   // 找出最高值
-  const maxCorrect = filteredAndSortedData.length > 0
-    ? Math.max(...filteredAndSortedData.map(row => parseFloat(row.correct)))
+  const maxCorrect = filteredAndSortedDataOpenRCA.length > 0
+    ? Math.max(...filteredAndSortedDataOpenRCA.map(row => parseFloat(row.correct)))
     : 0;
 
-  const headCells: Array<{
-    id: keyof Data;
+  const maxAccuracy = filteredAndSortedDataOpenRCA2.length > 0
+    ? Math.max(...filteredAndSortedDataOpenRCA2.map(row => parseFloat(row.accuracy)))
+    : 0;
+  const maxNodeF1 = filteredAndSortedDataOpenRCA2.length > 0
+    ? Math.max(...filteredAndSortedDataOpenRCA2.map(row => parseFloat(row.nodeF1)))
+    : 0;
+  const maxEdgeF1 = filteredAndSortedDataOpenRCA2.length > 0
+    ? Math.max(...filteredAndSortedDataOpenRCA2.map(row => parseFloat(row.edgeF1)))
+    : 0;
+
+  const modelHeaderLabel = (
+    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1 }}>
+      Model
+      <IconButton
+        size="small"
+        onClick={handleModelFilterClick}
+        sx={{
+          color: 'inherit',
+          padding: '2px',
+          '&:hover': { backgroundColor: 'rgba(255, 255, 255, 0.1)' }
+        }}
+      >
+        <FilterListIcon fontSize="small" />
+      </IconButton>
+      <Menu
+        anchorEl={modelFilterAnchor}
+        open={Boolean(modelFilterAnchor)}
+        onClose={handleModelFilterClose}
+        PaperProps={{
+          sx: {
+            maxHeight: 300,
+            width: 200,
+            backgroundColor: '#ffffff'
+          }
+        }}
+      >
+        <MenuItem onClick={handleSelectAllModels}>
+          <Checkbox
+            checked={selectedModels.length === Object.keys(modelColorMap).length}
+            indeterminate={selectedModels.length > 0 && selectedModels.length < Object.keys(modelColorMap).length}
+          />
+          <ListItemText primary="Select All" />
+        </MenuItem>
+        {Object.keys(modelColorMap).map((model) => (
+          <MenuItem key={model} onClick={() => handleModelToggle(model)}>
+            <Checkbox checked={selectedModels.includes(model)} />
+            <ListItemText
+              primary={
+                <Chip
+                  label={model}
+                  size="small"
+                  sx={{
+                    color: modelColorMap[model].color,
+                    backgroundColor: modelColorMap[model].backgroundColor,
+                    fontWeight: 500,
+                    border: `1px solid ${modelColorMap[model].color}`
+                  }}
+                />
+              }
+            />
+          </MenuItem>
+        ))}
+      </Menu>
+    </Box>
+  );
+
+  const headCellsOpenRCA: Array<{
+    id: OrderByOpenRCA;
     label: string | JSX.Element;
     width: string;
     sortable: boolean;
   }> = [
     { id: 'name', label: 'Method Name', width: '20%', sortable: false },
-    { 
-      id: 'model', 
-      label: (
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1 }}>
-          Model
-          <IconButton 
-            size="small" 
-            onClick={handleModelFilterClick}
-            sx={{ 
-              color: 'inherit',
-              padding: '2px',
-              '&:hover': { backgroundColor: 'rgba(255, 255, 255, 0.1)' }
-            }}
-          >
-            <FilterListIcon fontSize="small" />
-          </IconButton>
-          <Menu
-            anchorEl={modelFilterAnchor}
-            open={Boolean(modelFilterAnchor)}
-            onClose={handleModelFilterClose}
-            PaperProps={{
-              sx: {
-                maxHeight: 300,
-                width: 200,
-                backgroundColor: '#ffffff'
-              }
-            }}
-          >
-            <MenuItem onClick={handleSelectAllModels}>
-              <Checkbox 
-                checked={selectedModels.length === Object.keys(modelColorMap).length}
-                indeterminate={selectedModels.length > 0 && selectedModels.length < Object.keys(modelColorMap).length}
-              />
-              <ListItemText primary="Select All" />
-            </MenuItem>
-            {Object.keys(modelColorMap).map((model) => (
-              <MenuItem key={model} onClick={() => handleModelToggle(model)}>
-                <Checkbox checked={selectedModels.includes(model)} />
-                <ListItemText 
-                  primary={
-                    <Chip 
-                      label={model}
-                      size="small"
-                      sx={{
-                        color: modelColorMap[model].color,
-                        backgroundColor: modelColorMap[model].backgroundColor,
-                        fontWeight: 500,
-                        border: `1px solid ${modelColorMap[model].color}`
-                      }}
-                    />
-                  }
-                />
-              </MenuItem>
-            ))}
-          </Menu>
-        </Box>
-      ),
+    {
+      id: 'model',
+      label: modelHeaderLabel,
       width: '16%',
-      sortable: false 
+      sortable: false
     },
     { id: 'org', label: 'Org.', width: '9%', sortable: false },
     { id: 'frameworkOpen', label: 'Scaffold Open', width: '10%', sortable: false },
@@ -183,6 +212,55 @@ const Home = () => {
     { id: 'reproduced', label: 'Reproduced', width: '10%', sortable: false },
     { id: 'trajUrl', label: 'Traj.', width: '7%', sortable: false },
     { id: 'correct', label: 'Correct', width: '10%', sortable: true },
+    { id: 'date', label: 'Date', width: '8%', sortable: true },
+  ];
+
+  const headCellsOpenRCA2: Array<{
+    id: OrderByOpenRCA2;
+    label: string | JSX.Element;
+    width: string;
+    sortable: boolean;
+  }> = [
+    { id: 'name', label: 'Method Name', width: '18%', sortable: false },
+    { id: 'model', label: modelHeaderLabel, width: '14%', sortable: false },
+    { id: 'org', label: 'Org.', width: '8%', sortable: false },
+    { id: 'frameworkOpen', label: 'Scaffold Open', width: '9%', sortable: false },
+    { id: 'modelOpen', label: 'Model Open', width: '9%', sortable: false },
+    { id: 'reproduced', label: 'Reproduced', width: '9%', sortable: false },
+    { id: 'trajUrl', label: 'Traj.', width: '6%', sortable: false },
+    {
+      id: 'accuracy',
+      label: (
+        <Box sx={{ lineHeight: 1.05 }}>
+          <Box component="span" sx={{ display: 'block', fontWeight: 700, letterSpacing: '0.06em' }}>RC F1</Box>
+          <Box component="span" sx={{ display: 'block', opacity: 0.9, mt: 0.35 }}>P / R</Box>
+        </Box>
+      ),
+      width: '9%',
+      sortable: true
+    },
+    {
+      id: 'nodeF1',
+      label: (
+        <Box sx={{ lineHeight: 1.05 }}>
+          <Box component="span" sx={{ display: 'block', fontWeight: 700, letterSpacing: '0.06em' }}>NODE F1</Box>
+          <Box component="span" sx={{ display: 'block', opacity: 0.9, mt: 0.35 }}>P / R</Box>
+        </Box>
+      ),
+      width: '9%',
+      sortable: true
+    },
+    {
+      id: 'edgeF1',
+      label: (
+        <Box sx={{ lineHeight: 1.05 }}>
+          <Box component="span" sx={{ display: 'block', fontWeight: 700, letterSpacing: '0.06em' }}>EDGE F1</Box>
+          <Box component="span" sx={{ display: 'block', opacity: 0.9, mt: 0.35 }}>P / R</Box>
+        </Box>
+      ),
+      width: '9%',
+      sortable: true
+    },
     { id: 'date', label: 'Date', width: '8%', sortable: true },
   ];
 
@@ -224,7 +302,7 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
             <Box component="span" sx={{ whiteSpace: 'nowrap' }}>
               <Box
                 component="img"
-                src={`${prefix}/openrca_logo_back4.svg`}
+                src={`${prefix}/openrca_logo_white.png`}
                 alt="OpenRCA Logo"
                 sx={{
                   display: 'inline-block',
@@ -573,165 +651,329 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
                   }
                 }}
               >
-                <TableHead>
-                  <TableRow>
-                    {headCells.map((headCell) => (
-                      <TableCell 
-                        key={headCell.id}
-                        sortDirection={orderBy === headCell.id ? order : false}
-                        sx={{ 
-                          width: headCell.width,
-                          backgroundColor: '#1976d2',
-                          color: 'white',
-                          fontWeight: 600,
-                          textAlign: 'center'
-                        }}
-                      >
-                        {typeof headCell.label === 'string' ? (
-                          headCell.sortable ? (
-                            <TableSortLabel
-                              active={orderBy === headCell.id}
-                              direction={orderBy === headCell.id ? order : 'asc'}
-                              onClick={() => handleRequestSort(headCell.id)}
-                              sx={{
-                                width: '100%',
-                                justifyContent: 'center',
-                                '&.MuiTableSortLabel-root': {
-                                  color: 'white',
-                                },
-                                '&.MuiTableSortLabel-root:hover': {
-                                  color: 'white',
-                                },
-                                '&.Mui-active': {
-                                  color: 'white',
-                                },
-                                '& .MuiTableSortLabel-icon': {
-                                  color: 'white !important',
-                                },
-                              }}
-                            >
-                              {headCell.label}
-                            </TableSortLabel>
-                          ) : (
-                            headCell.label
-                          )
-                        ) : (
-                          headCell.label
-                        )}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {filteredAndSortedData.map((row) => (
-                    <TableRow 
-                      key={row.name + row.model}
-                      sx={{ 
-                        '&:last-child td, &:last-child th': { border: 0 },
-                        backgroundColor: row.model.includes('*') ? 'rgba(0, 0, 0, 0.02)' : 'inherit'
-                      }}
-                    >
-                      <TableCell sx={{ width: '20%', textAlign: 'center', fontWeight: 600 }}>
-                        {row.name}
-                      </TableCell>
-                      <TableCell sx={{ width: '16%', textAlign: 'center' }}>
-                        <Chip 
-                          label={row.model}
-                          size="small"
-                          sx={{
-                            color: modelColorMap[row.model.replace('*', '')]?.color || '#000',
-                            backgroundColor: modelColorMap[row.model.replace('*', '')]?.backgroundColor || '#f5f5f5',
-                            fontWeight: 500,
-                            '&:hover': {
-                              backgroundColor: modelColorMap[row.model.replace('*', '')]?.backgroundColor || '#f5f5f5',
-                            }
-                          }}
-                        />
-                      </TableCell>
-                      <TableCell sx={{ width: '9%', textAlign: 'center' }}>
-                        <Box
-                          component="img"
-                          src={orgLogoMap[row.org] || `${prefix}/default_logo.svg`}
-                          alt={`${row.org} Logo`}
-                          sx={{
-                            height: 20,
-                            width: 'auto',
-                            objectFit: 'contain',
-                            opacity: row.model.includes('*') ? 0.7 : 1,
-                            filter: row.model.includes('*') ? 'grayscale(20%)' : 'none'
-                          }}
-                        />
-                      </TableCell>
-                      <TableCell sx={{ width: '10%', textAlign: 'center' }}>
-                        <Chip
-                          label={row.frameworkOpen ? 'Open' : 'Closed'}
-                          size="small"
-                          sx={{
-                            backgroundColor: row.frameworkOpen ? '#dcfce7' : '#fee2e2',
-                            color: row.frameworkOpen ? '#166534' : '#991b1b',
-                            fontWeight: 600,
-                            border: `1px solid ${row.frameworkOpen ? '#86efac' : '#fecaca'}`
-                          }}
-                        />
-                      </TableCell>
-                      <TableCell sx={{ width: '10%', textAlign: 'center' }}>
-                        <Chip
-                          label={row.modelOpen ? 'Open' : 'Closed'}
-                          size="small"
-                          sx={{
-                            backgroundColor: row.modelOpen ? '#e0f2fe' : '#fee2e2',
-                            color: row.modelOpen ? '#075985' : '#991b1b',
-                            fontWeight: 600,
-                            border: `1px solid ${row.modelOpen ? '#7dd3fc' : '#fecaca'}`
-                          }}
-                        />
-                      </TableCell>
-                      <TableCell sx={{ width: '10%', textAlign: 'center' }}>
-                        <Chip
-                          label={row.reproduced ? 'Yes' : 'No'}
-                          size="small"
-                          sx={{
-                            backgroundColor: row.reproduced ? '#dbeafe' : '#fee2e2',
-                            color: row.reproduced ? '#1e3a8a' : '#991b1b',
-                            fontWeight: 600,
-                            border: `1px solid ${row.reproduced ? '#93c5fd' : '#fecaca'}`
-                          }}
-                        />
-                      </TableCell>
-                      <TableCell sx={{ width: '7%', textAlign: 'center' }}>
-                        {row.trajUrl ? (
-                          <IconButton
-                            size="small"
-                            component="a"
-                            href={row.trajUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
+                {activeDataset === 'OpenRCA' ? (
+                  <>
+                    <TableHead>
+                      <TableRow>
+                        {headCellsOpenRCA.map((headCell) => (
+                          <TableCell
+                            key={headCell.id}
+                            sortDirection={orderByOpenRCA === headCell.id ? orderOpenRCA : false}
                             sx={{
-                              color: '#2563eb',
-                              backgroundColor: 'rgba(37, 99, 235, 0.08)',
-                              '&:hover': { backgroundColor: 'rgba(37, 99, 235, 0.16)' }
+                              width: headCell.width,
+                              backgroundColor: '#1976d2',
+                              color: 'white',
+                              fontWeight: 600,
+                              textAlign: 'center'
                             }}
                           >
-                            <LinkIcon fontSize="small" />
-                          </IconButton>
-                        ) : (
-                          <Typography variant="body2" sx={{ color: '#94a3b8' }}>—</Typography>
-                        )}
-                      </TableCell>
-                      <TableCell 
-                        sx={{ 
-                          width: '10%', 
-                          textAlign: 'center',
-                          fontWeight: parseFloat(row.correct) === maxCorrect ? 600 : 'inherit',
-                          color: parseFloat(row.correct) === maxCorrect ? '#1976d2' : 'inherit'
-                        }}
-                      >
-                        {row.correct}
-                      </TableCell>
-                      <TableCell sx={{ width: '8%', textAlign: 'center' }}>{row.date}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
+                            {typeof headCell.label === 'string' ? (
+                              headCell.sortable ? (
+                                <TableSortLabel
+                                  active={orderByOpenRCA === headCell.id}
+                                  direction={orderByOpenRCA === headCell.id ? orderOpenRCA : 'asc'}
+                                  onClick={() => handleRequestSortOpenRCA(headCell.id)}
+                                  sx={{
+                                    width: '100%',
+                                    justifyContent: 'center',
+                                    '&.MuiTableSortLabel-root': { color: 'white' },
+                                    '&.MuiTableSortLabel-root:hover': { color: 'white' },
+                                    '&.Mui-active': { color: 'white' },
+                                    '& .MuiTableSortLabel-icon': { color: 'white !important' },
+                                  }}
+                                >
+                                  {headCell.label}
+                                </TableSortLabel>
+                              ) : (
+                                headCell.label
+                              )
+                            ) : (
+                              headCell.label
+                            )}
+                          </TableCell>
+                        ))}
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {filteredAndSortedDataOpenRCA.map((row) => (
+                        <TableRow
+                          key={row.name + row.model}
+                          sx={{
+                            '&:last-child td, &:last-child th': { border: 0 },
+                            backgroundColor: row.model.includes('*') ? 'rgba(0, 0, 0, 0.02)' : 'inherit'
+                          }}
+                        >
+                          <TableCell sx={{ width: '20%', textAlign: 'center', fontWeight: 600 }}>
+                            {row.name}
+                          </TableCell>
+                          <TableCell sx={{ width: '16%', textAlign: 'center' }}>
+                            <Chip
+                              label={row.model}
+                              size="small"
+                              sx={{
+                                color: modelColorMap[row.model.replace('*', '')]?.color || '#000',
+                                backgroundColor: modelColorMap[row.model.replace('*', '')]?.backgroundColor || '#f5f5f5',
+                                fontWeight: 500,
+                                '&:hover': {
+                                  backgroundColor: modelColorMap[row.model.replace('*', '')]?.backgroundColor || '#f5f5f5',
+                                }
+                              }}
+                            />
+                          </TableCell>
+                          <TableCell sx={{ width: '9%', textAlign: 'center' }}>
+                            <Box
+                              component="img"
+                              src={orgLogoMap[row.org] || `${prefix}/default_logo.svg`}
+                              alt={`${row.org} Logo`}
+                              sx={{
+                                height: 20,
+                                width: 'auto',
+                                objectFit: 'contain',
+                                opacity: row.model.includes('*') ? 0.7 : 1,
+                                filter: row.model.includes('*') ? 'grayscale(20%)' : 'none'
+                              }}
+                            />
+                          </TableCell>
+                          <TableCell sx={{ width: '10%', textAlign: 'center' }}>
+                            <Chip
+                              label={row.frameworkOpen ? 'Open' : 'Closed'}
+                              size="small"
+                              sx={{
+                                backgroundColor: row.frameworkOpen ? '#dcfce7' : '#fee2e2',
+                                color: row.frameworkOpen ? '#166534' : '#991b1b',
+                                fontWeight: 600,
+                                border: `1px solid ${row.frameworkOpen ? '#86efac' : '#fecaca'}`
+                              }}
+                            />
+                          </TableCell>
+                          <TableCell sx={{ width: '10%', textAlign: 'center' }}>
+                            <Chip
+                              label={row.modelOpen ? 'Open' : 'Closed'}
+                              size="small"
+                              sx={{
+                                backgroundColor: row.modelOpen ? '#e0f2fe' : '#fee2e2',
+                                color: row.modelOpen ? '#075985' : '#991b1b',
+                                fontWeight: 600,
+                                border: `1px solid ${row.modelOpen ? '#7dd3fc' : '#fecaca'}`
+                              }}
+                            />
+                          </TableCell>
+                          <TableCell sx={{ width: '10%', textAlign: 'center' }}>
+                            <Chip
+                              label={row.reproduced ? 'Yes' : 'No'}
+                              size="small"
+                              sx={{
+                                backgroundColor: row.reproduced ? '#dbeafe' : '#fee2e2',
+                                color: row.reproduced ? '#1e3a8a' : '#991b1b',
+                                fontWeight: 600,
+                                border: `1px solid ${row.reproduced ? '#93c5fd' : '#fecaca'}`
+                              }}
+                            />
+                          </TableCell>
+                          <TableCell sx={{ width: '7%', textAlign: 'center' }}>
+                            {row.trajUrl ? (
+                              <IconButton
+                                size="small"
+                                component="a"
+                                href={row.trajUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                sx={{
+                                  color: '#2563eb',
+                                  backgroundColor: 'rgba(37, 99, 235, 0.08)',
+                                  '&:hover': { backgroundColor: 'rgba(37, 99, 235, 0.16)' }
+                                }}
+                              >
+                                <LinkIcon fontSize="small" />
+                              </IconButton>
+                            ) : (
+                              <Typography variant="body2" sx={{ color: '#94a3b8' }}>—</Typography>
+                            )}
+                          </TableCell>
+                          <TableCell
+                            sx={{
+                              width: '10%',
+                              textAlign: 'center',
+                              fontWeight: parseFloat(row.correct) === maxCorrect ? 600 : 'inherit',
+                              color: parseFloat(row.correct) === maxCorrect ? '#1976d2' : 'inherit'
+                            }}
+                          >
+                            {row.correct}
+                          </TableCell>
+                          <TableCell sx={{ width: '8%', textAlign: 'center' }}>{row.date}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </>
+                ) : (
+                  <>
+                    <TableHead>
+                      <TableRow>
+                        {headCellsOpenRCA2.map((headCell) => (
+                          <TableCell
+                            key={headCell.id}
+                            sortDirection={orderByOpenRCA2 === headCell.id ? orderOpenRCA2 : false}
+                            sx={{
+                              width: headCell.width,
+                              backgroundColor: '#1976d2',
+                              color: 'white',
+                              fontWeight: 600,
+                              textAlign: 'center'
+                            }}
+                          >
+                            {typeof headCell.label === 'string' ? (
+                              headCell.sortable ? (
+                                <TableSortLabel
+                                  active={orderByOpenRCA2 === headCell.id}
+                                  direction={orderByOpenRCA2 === headCell.id ? orderOpenRCA2 : 'asc'}
+                                  onClick={() => handleRequestSortOpenRCA2(headCell.id)}
+                                  sx={{
+                                    width: '100%',
+                                    justifyContent: 'center',
+                                    '&.MuiTableSortLabel-root': { color: 'white' },
+                                    '&.MuiTableSortLabel-root:hover': { color: 'white' },
+                                    '&.Mui-active': { color: 'white' },
+                                    '& .MuiTableSortLabel-icon': { color: 'white !important' },
+                                  }}
+                                >
+                                  {headCell.label}
+                                </TableSortLabel>
+                              ) : (
+                                headCell.label
+                              )
+                            ) : (
+                              headCell.label
+                            )}
+                          </TableCell>
+                        ))}
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {filteredAndSortedDataOpenRCA2.map((row) => (
+                        <TableRow
+                          key={row.name + row.model}
+                          sx={{
+                            '&:last-child td, &:last-child th': { border: 0 },
+                            backgroundColor: row.model.includes('*') ? 'rgba(0, 0, 0, 0.02)' : 'inherit'
+                          }}
+                        >
+                          <TableCell sx={{ width: '18%', textAlign: 'center', fontWeight: 600 }}>
+                            {row.name}
+                          </TableCell>
+                          <TableCell sx={{ width: '14%', textAlign: 'center' }}>
+                            <Chip
+                              label={row.model}
+                              size="small"
+                              sx={{
+                                color: modelColorMap[row.model.replace('*', '')]?.color || '#000',
+                                backgroundColor: modelColorMap[row.model.replace('*', '')]?.backgroundColor || '#f5f5f5',
+                                fontWeight: 500,
+                                '&:hover': {
+                                  backgroundColor: modelColorMap[row.model.replace('*', '')]?.backgroundColor || '#f5f5f5',
+                                }
+                              }}
+                            />
+                          </TableCell>
+                          <TableCell sx={{ width: '8%', textAlign: 'center' }}>
+                            <Box
+                              component="img"
+                              src={orgLogoMap[row.org] || `${prefix}/default_logo.svg`}
+                              alt={`${row.org} Logo`}
+                              sx={{ height: 20, width: 'auto', objectFit: 'contain' }}
+                            />
+                          </TableCell>
+                          <TableCell sx={{ width: '9%', textAlign: 'center' }}>
+                            <Chip
+                              label={row.frameworkOpen ? 'Open' : 'Closed'}
+                              size="small"
+                              sx={{
+                                backgroundColor: row.frameworkOpen ? '#dcfce7' : '#fee2e2',
+                                color: row.frameworkOpen ? '#166534' : '#991b1b',
+                                fontWeight: 600,
+                                border: `1px solid ${row.frameworkOpen ? '#86efac' : '#fecaca'}`
+                              }}
+                            />
+                          </TableCell>
+                          <TableCell sx={{ width: '9%', textAlign: 'center' }}>
+                            <Chip
+                              label={row.modelOpen ? 'Open' : 'Closed'}
+                              size="small"
+                              sx={{
+                                backgroundColor: row.modelOpen ? '#e0f2fe' : '#fee2e2',
+                                color: row.modelOpen ? '#075985' : '#991b1b',
+                                fontWeight: 600,
+                                border: `1px solid ${row.modelOpen ? '#7dd3fc' : '#fecaca'}`
+                              }}
+                            />
+                          </TableCell>
+                          <TableCell sx={{ width: '9%', textAlign: 'center' }}>
+                            <Chip
+                              label={row.reproduced ? 'Yes' : 'No'}
+                              size="small"
+                              sx={{
+                                backgroundColor: row.reproduced ? '#dbeafe' : '#fee2e2',
+                                color: row.reproduced ? '#1e3a8a' : '#991b1b',
+                                fontWeight: 600,
+                                border: `1px solid ${row.reproduced ? '#93c5fd' : '#fecaca'}`
+                              }}
+                            />
+                          </TableCell>
+                          <TableCell sx={{ width: '6%', textAlign: 'center' }}>
+                            {row.trajUrl ? (
+                              <IconButton
+                                size="small"
+                                component="a"
+                                href={row.trajUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                sx={{
+                                  color: '#2563eb',
+                                  backgroundColor: 'rgba(37, 99, 235, 0.08)',
+                                  '&:hover': { backgroundColor: 'rgba(37, 99, 235, 0.16)' }
+                                }}
+                              >
+                                <LinkIcon fontSize="small" />
+                              </IconButton>
+                            ) : (
+                              <Typography variant="body2" sx={{ color: '#94a3b8' }}>—</Typography>
+                            )}
+                          </TableCell>
+                          <TableCell
+                            sx={{
+                              width: '9%',
+                              textAlign: 'center',
+                              fontWeight: parseFloat(row.accuracy) === maxAccuracy ? 600 : 'inherit',
+                              color: parseFloat(row.accuracy) === maxAccuracy ? '#1976d2' : 'inherit'
+                            }}
+                          >
+                            {row.accuracy}
+                          </TableCell>
+                          <TableCell
+                            sx={{
+                              width: '9%',
+                              textAlign: 'center',
+                              fontWeight: parseFloat(row.nodeF1) === maxNodeF1 ? 600 : 'inherit',
+                              color: parseFloat(row.nodeF1) === maxNodeF1 ? '#1976d2' : 'inherit'
+                            }}
+                          >
+                            {row.nodeF1}
+                          </TableCell>
+                          <TableCell
+                            sx={{
+                              width: '9%',
+                              textAlign: 'center',
+                              fontWeight: parseFloat(row.edgeF1) === maxEdgeF1 ? 600 : 'inherit',
+                              color: parseFloat(row.edgeF1) === maxEdgeF1 ? '#1976d2' : 'inherit'
+                            }}
+                          >
+                            {row.edgeF1}
+                          </TableCell>
+                          <TableCell sx={{ width: '8%', textAlign: 'center' }}>{row.date}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </>
+                )}
               </Table>
             </TableContainer>
           </Box>
