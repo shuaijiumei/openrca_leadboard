@@ -194,9 +194,9 @@ const Home = () => {
   );
 
   const statusHeaderLabel = (
-    <Box sx={{ textAlign: 'center', lineHeight: 1.1 }}>
+    <Box sx={{ textAlign: 'center', lineHeight: 1.1, minWidth: 230 }}>
       <Box component="span" sx={{ display: 'block', fontWeight: 700 }}>Transparency</Box>
-      <Box component="span" sx={{ display: 'block', mt: 0.35, fontSize: '0.78rem', opacity: 0.92 }}>
+      <Box component="span" sx={{ display: 'block', mt: 0.35, fontSize: '0.78rem', opacity: 0.92, whiteSpace: 'nowrap' }}>
         Scaffold / Model / Reproduced
       </Box>
     </Box>
@@ -217,7 +217,7 @@ const Home = () => {
     },
     { id: 'org', label: 'Org.', width: '4%', sortable: false },
     { id: 'trajUrl', label: 'Traj.', width: '4%', sortable: false },
-    { id: 'frameworkOpen', label: statusHeaderLabel, width: '19%', sortable: false },
+    { id: 'frameworkOpen', label: statusHeaderLabel, width: '24%', sortable: false },
     { id: 'correct', label: 'Correct', width: '9%', sortable: true },
     { id: 'partialCorrect', label: 'Partial Correct', width: '10%', sortable: true },
     { id: 'date', label: 'Date', width: '10%', sortable: true },
@@ -229,23 +229,12 @@ const Home = () => {
     width: string;
     sortable: boolean;
   }> = [
-    { id: 'name', label: 'Method Name', width: '18%', sortable: false },
-    { id: 'model', label: modelHeaderLabel, width: '14%', sortable: false },
-    { id: 'org', label: 'Org.', width: '8%', sortable: false },
-    { id: 'frameworkOpen', label: 'Open Scaffolds', width: '9%', sortable: false },
-    { id: 'modelOpen', label: 'Open Weights', width: '9%', sortable: false },
-    { id: 'reproduced', label: 'Reproduced', width: '9%', sortable: false },
-    { id: 'trajUrl', label: 'Traj.', width: '6%', sortable: false },
-    {
-      id: 'accuracy',
-      label: (
-        <Box sx={{ lineHeight: 1.05 }}>
-          <Box component="span" sx={{ display: 'block', fontWeight: 700, letterSpacing: '0.06em' }}>ACC</Box>
-        </Box>
-      ),
-      width: '8%',
-      sortable: true
-    },
+    { id: 'name', label: 'Method Name', width: '26%', sortable: false },
+    { id: 'model', label: modelHeaderLabel, width: '13%', sortable: false },
+    { id: 'org', label: 'Org.', width: '7%', sortable: false },
+    { id: 'trajUrl', label: 'Traj.', width: '5%', sortable: false },
+    { id: 'frameworkOpen', label: statusHeaderLabel, width: '22%', sortable: false },
+    { id: 'accuracy', label: 'ACC', width: '8%', sortable: true },
     {
       id: 'nodeF1',
       label: (
@@ -767,7 +756,7 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
                               <Typography variant="body2" sx={{ color: '#94a3b8' }}>—</Typography>
                             )}
                           </TableCell>
-                          <TableCell sx={{ width: '19%', textAlign: 'center' }}>
+                          <TableCell sx={{ width: '24%', textAlign: 'center' }}>
                             <Box
                               sx={{
                                 display: 'inline-flex',
@@ -902,7 +891,7 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
                               <Typography variant="body2" sx={{ color: '#94a3b8' }}>—</Typography>
                             )}
                           </TableCell>
-                          <TableCell sx={{ width: '18%', textAlign: 'center' }}>
+                          <TableCell sx={{ width: '22%', textAlign: 'center' }}>
                             <Box
                               sx={{
                                 display: 'inline-flex',

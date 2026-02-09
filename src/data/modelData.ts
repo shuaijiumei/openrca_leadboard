@@ -92,78 +92,78 @@ export const modelDataOpenRCA: Data[] = [
 
 // Mock data for OpenRCA 2.0 (placeholder)
 export const modelDataOpenRCA2: DataOpenRCA2[] = [
-  {
-    name: 'Claude Agent SDK & SRE Tool MCP',
-    model: 'Claude 4.5 Opus',
-    org: 'Anthropic',
-    accuracy: '84.2%',
-    nodeF1: '84.7/87.4/82.1',
-    edgeF1: '77.1/79.0/75.3',
-    date: '2026/1/17',
-    frameworkOpen: false,
-    modelOpen: false,
-    reproduced: false,
-    trajUrl: 'https://example.com/traj/openrca2-claude-agent'
-  },
-  {
-    name: 'RCA-Agent',
-    model: 'GPT-4o',
-    org: 'OpenRCA',
-    accuracy: '71.6%',
-    nodeF1: '72.3/74.9/69.8',
-    edgeF1: '63.8/66.3/61.5',
-    date: '2026/1/20',
-    frameworkOpen: true,
-    modelOpen: false,
-    reproduced: true,
-    trajUrl: 'https://example.com/traj/openrca2-gpt4o'
-  },
-  {
-    name: 'RCA-Agent',
-    model: 'Gemini 1.5 Pro',
-    org: 'Google',
-    accuracy: '67.8%',
-    nodeF1: '68.8/71.0/66.7',
-    edgeF1: '60.2/62.4/58.1',
-    date: '2026/1/20',
-    frameworkOpen: true,
-    modelOpen: false,
-    reproduced: true
-  },
-  {
-    name: 'Prompting (Oracle)',
-    model: 'Claude 3.5 Sonnet',
-    org: 'OpenRCA',
-    accuracy: '63.5%',
-    nodeF1: '66.4/68.8/64.1',
-    edgeF1: '57.3/59.6/55.2',
-    date: '2026/1/18',
-    frameworkOpen: true,
-    modelOpen: false,
-    reproduced: true
-  },
-  {
-    name: 'Prompting (Balanced)',
-    model: 'Mistral Large 2',
-    org: 'OpenRCA',
-    accuracy: '55.9%',
-    nodeF1: '58.1/60.4/56.0',
-    edgeF1: '49.8/52.1/47.6',
-    date: '2026/1/18',
-    frameworkOpen: true,
-    modelOpen: true,
-    reproduced: true
-  },
-  {
-    name: 'Prompting (Balanced)',
-    model: 'Llama 3.1 Instruct',
-    org: 'Meta',
-    accuracy: '52.7%',
-    nodeF1: '55.6/57.8/53.5',
-    edgeF1: '47.6/49.7/45.8',
-    date: '2026/1/19',
-    frameworkOpen: true,
-    modelOpen: true,
-    reproduced: true
-  }
+  // {
+  //   name: 'Claude Agent SDK & SRE Tool MCP',
+  //   model: 'Claude 4.5 Opus',
+  //   org: 'Anthropic',
+  //   accuracy: '84.2%',
+  //   nodeF1: '84.7/87.4/82.1',
+  //   edgeF1: '77.1/79.0/75.3',
+  //   date: '2026/1/17',
+  //   frameworkOpen: false,
+  //   modelOpen: false,
+  //   reproduced: false,
+  //   trajUrl: 'https://example.com/traj/openrca2-claude-agent'
+  // },
+  // {
+  //   name: 'RCA-Agent',
+  //   model: 'GPT-4o',
+  //   org: 'OpenRCA',
+  //   accuracy: '71.6%',
+  //   nodeF1: '72.3/74.9/69.8',
+  //   edgeF1: '63.8/66.3/61.5',
+  //   date: '2026/1/20',
+  //   frameworkOpen: true,
+  //   modelOpen: false,
+  //   reproduced: true,
+  //   trajUrl: 'https://example.com/traj/openrca2-gpt4o'
+  // },
+  // {
+  //   name: 'RCA-Agent',
+  //   model: 'Gemini 1.5 Pro',
+  //   org: 'Google',
+  //   accuracy: '67.8%',
+  //   nodeF1: '68.8/71.0/66.7',
+  //   edgeF1: '60.2/62.4/58.1',
+  //   date: '2026/1/20',
+  //   frameworkOpen: true,
+  //   modelOpen: false,
+  //   reproduced: true
+  // },
+  // {
+  //   name: 'Prompting (Oracle)',
+  //   model: 'Claude 3.5 Sonnet',
+  //   org: 'OpenRCA',
+  //   accuracy: '63.5%',
+  //   nodeF1: '66.4/68.8/64.1',
+  //   edgeF1: '57.3/59.6/55.2',
+  //   date: '2026/1/18',
+  //   frameworkOpen: true,
+  //   modelOpen: false,
+  //   reproduced: true
+  // },
+  // {
+  //   name: 'Prompting (Balanced)',
+  //   model: 'Mistral Large 2',
+  //   org: 'OpenRCA',
+  //   accuracy: '55.9%',
+  //   nodeF1: '58.1/60.4/56.0',
+  //   edgeF1: '49.8/52.1/47.6',
+  //   date: '2026/1/18',
+  //   frameworkOpen: true,
+  //   modelOpen: true,
+  //   reproduced: true
+  // },
+  // {
+  //   name: 'Prompting (Balanced)',
+  //   model: 'Llama 3.1 Instruct',
+  //   org: 'Meta',
+  //   accuracy: '52.7%',
+  //   nodeF1: '55.6/57.8/53.5',
+  //   edgeF1: '47.6/49.7/45.8',
+  //   date: '2026/1/19',
+  //   frameworkOpen: true,
+  //   modelOpen: true,
+  //   reproduced: true
+  // }
 ];
