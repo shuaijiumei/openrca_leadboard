@@ -3,11 +3,9 @@ export interface Data {
   model: string;
   org: string;
   correct: string;
-  partialCorrect?: string;
   date: string;
   frameworkOpen: boolean;
   modelOpen: boolean;
-  reproduced: boolean;
   trajUrl?: string;
 }
 
@@ -21,7 +19,6 @@ export interface DataOpenRCA2 {
   date: string;
   frameworkOpen: boolean;
   modelOpen: boolean;
-  reproduced: boolean;
   trajUrl?: string;
 }
 
@@ -45,7 +42,8 @@ export const orgLogoMap: { [key: string]: string } = {
   'OpenAI': `${prefix}/openai_logo.svg`,
   'Anthropic': `${prefix}/anthropic-1.svg`,
   'Meta': `${prefix}/meta_logo.svg`,
-  'OpenRCA': `${prefix}/openrca_logo_white.png`
+  'OpenRCA': `${prefix}/openrca_logo_white.png`,
+  'None': '-'
 };
 
 // 新闻数据
@@ -60,34 +58,34 @@ export const news = [
 
 // 模型数据
 export const modelDataOpenRCA: Data[] = [
-  { name: 'Claude Agent SDK & SRE Tool MCP', model: 'Claude 4.5 Opus', org: 'Anthropic', correct: '91.5%', date: '2026/1/17', frameworkOpen: false, modelOpen: false, reproduced: false, trajUrl: 'https://example.com/traj/claude-agent-sdk' },
+  { name: 'Claude Agent SDK & SRE Tool MCP', model: 'Claude 4.5 Opus', org: 'Anthropic', correct: '91.5%', date: '2026/1/17', frameworkOpen: false, modelOpen: false, trajUrl: 'https://example.com/traj/claude-agent-sdk' },
   // Closed Models - RCA-Agent
-  { name: 'RCA-Agent', model: 'Claude 3.5 Sonnet', org: 'OpenRCA', correct: '11.34%', date: '2025/1/23', frameworkOpen: true, modelOpen: false, reproduced: true, trajUrl: 'https://example.com/traj/rca-agent-claude' },
-  { name: 'RCA-Agent', model: 'GPT-4o', org: 'OpenRCA', correct: '8.96%', date: '2025/1/23', frameworkOpen: true, modelOpen: false, reproduced: true, trajUrl: 'https://example.com/traj/rca-agent-gpt4o' },
-  { name: 'RCA-Agent', model: 'Gemini 1.5 Pro', org: 'OpenRCA', correct: '2.69%', date: '2025/1/23', frameworkOpen: true, modelOpen: false, reproduced: true, trajUrl: 'https://example.com/traj/rca-agent-gemini' },
+  { name: 'RCA-Agent', model: 'Claude 3.5 Sonnet', org: 'OpenRCA', correct: '11.34%', date: '2025/1/23', frameworkOpen: true, modelOpen: false, trajUrl: 'https://example.com/traj/rca-agent-claude' },
+  { name: 'RCA-Agent', model: 'GPT-4o', org: 'OpenRCA', correct: '8.96%', date: '2025/1/23', frameworkOpen: true, modelOpen: false, trajUrl: 'https://example.com/traj/rca-agent-gpt4o' },
+  { name: 'RCA-Agent', model: 'Gemini 1.5 Pro', org: 'OpenRCA', correct: '2.69%', date: '2025/1/23', frameworkOpen: true, modelOpen: false, trajUrl: 'https://example.com/traj/rca-agent-gemini' },
   
   // Closed Models - Balanced
-  { name: 'Prompting (Balanced)', model: 'Claude 3.5 Sonnet', org: 'OpenRCA', correct: '3.88%', date: '2025/1/23', frameworkOpen: true, modelOpen: false, reproduced: true },
-  { name: 'Prompting (Balanced)', model: 'GPT-4o', org: 'OpenRCA', correct: '3.28%', date: '2025/1/23', frameworkOpen: true, modelOpen: false, reproduced: true },
-  { name: 'Prompting (Balanced)', model: 'Gemini 1.5 Pro', org: 'OpenRCA', correct: '6.27%', date: '2025/1/23', frameworkOpen: true, modelOpen: false, reproduced: true },
+  { name: 'Prompting (Balanced)', model: 'Claude 3.5 Sonnet', org: 'None', correct: '3.88%', date: '2025/1/23', frameworkOpen: true, modelOpen: false },
+  { name: 'Prompting (Balanced)', model: 'GPT-4o', org: 'None', correct: '3.28%', date: '2025/1/23', frameworkOpen: true, modelOpen: false },
+  { name: 'Prompting (Balanced)', model: 'Gemini 1.5 Pro', org: 'None', correct: '6.27%', date: '2025/1/23', frameworkOpen: true, modelOpen: false },
   
   // Closed Models - Oracle
-  { name: 'Prompting (Oracle)', model: 'Claude 3.5 Sonnet', org: 'OpenRCA', correct: '5.37%', date: '2025/1/23', frameworkOpen: true, modelOpen: false, reproduced: true },
-  { name: 'Prompting (Oracle)', model: 'GPT-4o', org: 'OpenRCA', correct: '6.27%', date: '2025/1/23', frameworkOpen: true, modelOpen: false, reproduced: true },
-  { name: 'Prompting (Oracle)', model: 'Gemini 1.5 Pro', org: 'OpenRCA', correct: '7.16%', date: '2025/1/23', frameworkOpen: true, modelOpen: false, reproduced: true },
+  { name: 'Prompting (Oracle)', model: 'Claude 3.5 Sonnet', org: 'None', correct: '5.37%', date: '2025/1/23', frameworkOpen: true, modelOpen: false },
+  { name: 'Prompting (Oracle)', model: 'GPT-4o', org: 'None', correct: '6.27%', date: '2025/1/23', frameworkOpen: true, modelOpen: false },
+  { name: 'Prompting (Oracle)', model: 'Gemini 1.5 Pro', org: 'None', correct: '7.16%', date: '2025/1/23', frameworkOpen: true, modelOpen: false },
   
   // Open Source Models - Balanced
-  { name: 'Prompting (Balanced)', model: 'Mistral Large 2', org: 'OpenRCA', correct: '3.58%', date: '2025/1/23', frameworkOpen: true, modelOpen: true, reproduced: true, trajUrl: 'https://example.com/traj/prompting-balanced-mistral' },
-  { name: 'Prompting (Balanced)', model: 'Command R+', org: 'OpenRCA', correct: '4.18%', date: '2025/1/23', frameworkOpen: true, modelOpen: true, reproduced: true },
-  { name: 'Prompting (Balanced)', model: 'Llama 3.1 Instruct', org: 'OpenRCA', correct: '2.99%', date: '2025/1/23', frameworkOpen: true, modelOpen: true, reproduced: true },
+  { name: 'Prompting (Balanced)', model: 'Mistral Large 2', org: 'None', correct: '3.58%', date: '2025/1/23', frameworkOpen: true, modelOpen: true, trajUrl: '' },
+  { name: 'Prompting (Balanced)', model: 'Command R+', org: 'None', correct: '4.18%', date: '2025/1/23', frameworkOpen: true, modelOpen: true },
+  { name: 'Prompting (Balanced)', model: 'Llama 3.1 Instruct', org: 'None', correct: '2.99%', date: '2025/1/23', frameworkOpen: true, modelOpen: true },
   
   // Open Source Models - Oracle
-  { name: 'Prompting (Oracle)', model: 'Mistral Large 2', org: 'OpenRCA', correct: '4.48%', date: '2025/1/23', frameworkOpen: true, modelOpen: true, reproduced: true },
-  { name: 'Prompting (Oracle)', model: 'Command R+', org: 'OpenRCA', correct: '4.78%', date: '2025/1/23', frameworkOpen: true, modelOpen: true, reproduced: true },
-  { name: 'Prompting (Oracle)', model: 'Llama 3.1 Instruct', org: 'OpenRCA', correct: '3.88%', date: '2025/1/23', frameworkOpen: true, modelOpen: true, reproduced: true },
+  { name: 'Prompting (Oracle)', model: 'Mistral Large 2', org: 'None', correct: '4.48%', date: '2025/1/23', frameworkOpen: true, modelOpen: true },
+  { name: 'Prompting (Oracle)', model: 'Command R+', org: 'None', correct: '4.78%', date: '2025/1/23', frameworkOpen: true, modelOpen: true },
+  { name: 'Prompting (Oracle)', model: 'Llama 3.1 Instruct', org: 'None', correct: '3.88%', date: '2025/1/23', frameworkOpen: true, modelOpen: true },
   
   // Open Source Models - RCA-Agent
-  { name: 'RCA-Agent', model: 'Llama 3.1 Instruct', org: 'OpenRCA', correct: '3.28%', date: '2025/1/23', frameworkOpen: true, modelOpen: true, reproduced: true }
+  { name: 'RCA-Agent', model: 'Llama 3.1 Instruct', org: 'None', correct: '3.28%', date: '2025/1/23', frameworkOpen: true, modelOpen: true }
 ];
 
 // Mock data for OpenRCA 2.0 (placeholder)
@@ -108,7 +106,7 @@ export const modelDataOpenRCA2: DataOpenRCA2[] = [
   // {
   //   name: 'RCA-Agent',
   //   model: 'GPT-4o',
-  //   org: 'OpenRCA',
+  //   org: 'None',
   //   accuracy: '71.6%',
   //   nodeF1: '72.3/74.9/69.8',
   //   edgeF1: '63.8/66.3/61.5',
@@ -133,7 +131,7 @@ export const modelDataOpenRCA2: DataOpenRCA2[] = [
   // {
   //   name: 'Prompting (Oracle)',
   //   model: 'Claude 3.5 Sonnet',
-  //   org: 'OpenRCA',
+  //   org: 'None',
   //   accuracy: '63.5%',
   //   nodeF1: '66.4/68.8/64.1',
   //   edgeF1: '57.3/59.6/55.2',
@@ -145,7 +143,7 @@ export const modelDataOpenRCA2: DataOpenRCA2[] = [
   // {
   //   name: 'Prompting (Balanced)',
   //   model: 'Mistral Large 2',
-  //   org: 'OpenRCA',
+  //   org: 'None',
   //   accuracy: '55.9%',
   //   nodeF1: '58.1/60.4/56.0',
   //   edgeF1: '49.8/52.1/47.6',

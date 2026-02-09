@@ -194,10 +194,10 @@ const Home = () => {
   );
 
   const statusHeaderLabel = (
-    <Box sx={{ textAlign: 'center', lineHeight: 1.1, minWidth: 230 }}>
+    <Box sx={{ textAlign: 'center', lineHeight: 1.1, minWidth: 180 }}>
       <Box component="span" sx={{ display: 'block', fontWeight: 700 }}>Transparency</Box>
-      <Box component="span" sx={{ display: 'block', mt: 0.35, fontSize: '0.78rem', opacity: 0.92, whiteSpace: 'nowrap' }}>
-        Scaffold / Model / Reproduced
+      <Box component="span" sx={{ display: 'block', mt: 0.35, fontSize: '0.65rem', opacity: 0.92, whiteSpace: 'nowrap' }}>
+        Scaffold / Model
       </Box>
     </Box>
   );
@@ -218,8 +218,7 @@ const Home = () => {
     { id: 'org', label: 'Org.', width: '4%', sortable: false },
     { id: 'trajUrl', label: 'Traj.', width: '4%', sortable: false },
     { id: 'frameworkOpen', label: statusHeaderLabel, width: '24%', sortable: false },
-    { id: 'correct', label: 'Correct', width: '9%', sortable: true },
-    { id: 'partialCorrect', label: 'Partial Correct', width: '10%', sortable: true },
+    { id: 'correct', label: 'Acc.', width: '9%', sortable: true },
     { id: 'date', label: 'Date', width: '10%', sortable: true },
   ];
 
@@ -234,12 +233,12 @@ const Home = () => {
     { id: 'org', label: 'Org.', width: '7%', sortable: false },
     { id: 'trajUrl', label: 'Traj.', width: '5%', sortable: false },
     { id: 'frameworkOpen', label: statusHeaderLabel, width: '22%', sortable: false },
-    { id: 'accuracy', label: 'ACC', width: '8%', sortable: true },
+    { id: 'accuracy', label: 'Acc.', width: '8%', sortable: true },
     {
       id: 'nodeF1',
       label: (
         <Box sx={{ lineHeight: 1.05 }}>
-          <Box component="span" sx={{ display: 'block', fontWeight: 700, letterSpacing: '0.06em' }}>NODE</Box>
+          <Box component="span" sx={{ display: 'block', fontWeight: 700, letterSpacing: '0.06em' }}>Node</Box>
           <Box component="span" sx={{ display: 'block', opacity: 0.9, mt: 0.35 }}>F1 / P / R</Box>
         </Box>
       ),
@@ -250,7 +249,7 @@ const Home = () => {
       id: 'edgeF1',
       label: (
         <Box sx={{ lineHeight: 1.05 }}>
-          <Box component="span" sx={{ display: 'block', fontWeight: 700, letterSpacing: '0.06em' }}>EDGE</Box>
+          <Box component="span" sx={{ display: 'block', fontWeight: 700, letterSpacing: '0.06em' }}>Edge</Box>
           <Box component="span" sx={{ display: 'block', opacity: 0.9, mt: 0.35 }}>F1 / P / R</Box>
         </Box>
       ),
@@ -499,7 +498,7 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
                 mb: 1
               }}
             >
-              Use the tags below to filter results. The table also indicates open-source status and whether each method is reproduced by the authors.
+              Use the tags below to filter results. The table also indicates open-source status of each method.
             </Typography>
 
             <Box
@@ -723,18 +722,22 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
                             />
                           </TableCell>
                           <TableCell sx={{ width: '7%', textAlign: 'center' }}>
-                            <Box
-                              component="img"
-                              src={orgLogoMap[row.org] || `${prefix}/default_logo.svg`}
-                              alt={`${row.org} Logo`}
-                              sx={{
-                                height: 20,
-                                width: 'auto',
-                                objectFit: 'contain',
-                                opacity: row.model.includes('*') ? 0.7 : 1,
-                                filter: row.model.includes('*') ? 'grayscale(20%)' : 'none'
-                              }}
-                            />
+                            {orgLogoMap[row.org] === '-' ? (
+                              <Typography sx={{ color: '#757575' }}>—</Typography>
+                            ) : (
+                              <Box
+                                component="img"
+                                src={orgLogoMap[row.org] || `${prefix}/default_logo.svg`}
+                                alt={`${row.org} Logo`}
+                                sx={{
+                                  height: 20,
+                                  width: 'auto',
+                                  objectFit: 'contain',
+                                  opacity: row.model.includes('*') ? 0.7 : 1,
+                                  filter: row.model.includes('*') ? 'grayscale(20%)' : 'none'
+                                }}
+                              />
+                            )}
                           </TableCell>
                           <TableCell sx={{ width: '6%', textAlign: 'center' }}>
                             {row.trajUrl ? (
@@ -769,11 +772,9 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
                                 border: '1px solid #dbeafe'
                               }}
                             >
-                              <Box component="span">{row.frameworkOpen ? '✅' : '❌'}</Box>
+                              <Box component="span">{row.frameworkOpen ? '✅' : '✖️'}</Box>
                               <Box component="span" sx={{ color: '#94a3b8', fontSize: '0.85rem' }}>/</Box>
-                              <Box component="span">{row.modelOpen ? '✅' : '❌'}</Box>
-                              <Box component="span" sx={{ color: '#94a3b8', fontSize: '0.85rem' }}>/</Box>
-                              <Box component="span">{row.reproduced ? '✅' : '❌'}</Box>
+                              <Box component="span">{row.modelOpen ? '✅' : '✖️'}</Box>
                             </Box>
                           </TableCell>
                           <TableCell
@@ -785,9 +786,6 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
                             }}
                           >
                             {row.correct}
-                          </TableCell>
-                          <TableCell sx={{ width: '10%', textAlign: 'center' }}>
-                            {row.partialCorrect ?? '—'}
                           </TableCell>
                           <TableCell sx={{ width: '10%', textAlign: 'center' }}>{row.date}</TableCell>
                         </TableRow>
@@ -864,12 +862,16 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
                             />
                           </TableCell>
                           <TableCell sx={{ width: '7%', textAlign: 'center' }}>
-                            <Box
-                              component="img"
-                              src={orgLogoMap[row.org] || `${prefix}/default_logo.svg`}
-                              alt={`${row.org} Logo`}
-                              sx={{ height: 20, width: 'auto', objectFit: 'contain' }}
-                            />
+                            {orgLogoMap[row.org] === '-' ? (
+                              <Typography sx={{ color: '#757575' }}>—</Typography>
+                            ) : (
+                              <Box
+                                component="img"
+                                src={orgLogoMap[row.org] || `${prefix}/default_logo.svg`}
+                                alt={`${row.org} Logo`}
+                                sx={{ height: 20, width: 'auto', objectFit: 'contain' }}
+                              />
+                            )}
                           </TableCell>
                           <TableCell sx={{ width: '5%', textAlign: 'center' }}>
                             {row.trajUrl ? (
@@ -904,11 +906,9 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
                                 border: '1px solid #dbeafe'
                               }}
                             >
-                              <Box component="span">{row.frameworkOpen ? '✅' : '❌'}</Box>
+                              <Box component="span">{row.frameworkOpen ? '✅' : '✖️'}</Box>
                               <Box component="span" sx={{ color: '#94a3b8', fontSize: '0.85rem' }}>/</Box>
-                              <Box component="span">{row.modelOpen ? '✅' : '❌'}</Box>
-                              <Box component="span" sx={{ color: '#94a3b8', fontSize: '0.85rem' }}>/</Box>
-                              <Box component="span">{row.reproduced ? '✅' : '❌'}</Box>
+                              <Box component="span">{row.modelOpen ? '✅' : '✖️'}</Box>
                             </Box>
                           </TableCell>
                           <TableCell
