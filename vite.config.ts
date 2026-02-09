@@ -6,6 +6,6 @@ export default defineConfig(({ mode }) => ({
   base: mode === 'development' ? '/' : '/openrca_leadboard/',
   plugins: [react()],
   server: {
-    allowedHosts: ['connection-mom-agencies-shoot.trycloudflare.com'],
+    allowedHosts: true,
   },
 }))

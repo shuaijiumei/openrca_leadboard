@@ -116,7 +116,7 @@ const Home = () => {
     width: string;
     sortable: boolean;
   }> = [
-    { id: 'name', label: 'Method Name', width: '22%', sortable: false },
+    { id: 'name', label: 'Method Name', width: '20%', sortable: false },
     { 
       id: 'model', 
       label: (
@@ -174,15 +174,16 @@ const Home = () => {
           </Menu>
         </Box>
       ),
-      width: '18%',
+      width: '16%',
       sortable: false 
     },
-    { id: 'org', label: 'Org.', width: '10%', sortable: false },
-    { id: 'frameworkOpen', label: 'Scaffold Open', width: '11%', sortable: false },
-    { id: 'modelOpen', label: 'Model Open', width: '11%', sortable: false },
-    { id: 'trajUrl', label: 'Traj.', width: '8%', sortable: false },
-    { id: 'correct', label: 'Correct', width: '11%', sortable: true },
-    { id: 'date', label: 'Date', width: '9%', sortable: true },
+    { id: 'org', label: 'Org.', width: '9%', sortable: false },
+    { id: 'frameworkOpen', label: 'Scaffold Open', width: '10%', sortable: false },
+    { id: 'modelOpen', label: 'Model Open', width: '10%', sortable: false },
+    { id: 'reproduced', label: 'Reproduced', width: '10%', sortable: false },
+    { id: 'trajUrl', label: 'Traj.', width: '7%', sortable: false },
+    { id: 'correct', label: 'Correct', width: '10%', sortable: true },
+    { id: 'date', label: 'Date', width: '8%', sortable: true },
   ];
 
   const handleCopyClick = () => {
@@ -204,13 +205,14 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
       minHeight: '100vh',
       pt: 4
     }}>
-      <Container maxWidth="lg" sx={{ maxWidth: '1080px !important' }}>
+      <Container maxWidth={false} sx={{ maxWidth: '1320px !important' }}>
         <Box sx={{ my: 4 }}>
           <Typography 
             variant="h4" 
             component="h1" 
             gutterBottom
             sx={{
+              fontSize: { xs: '2rem', md: '2.6rem' },
               background: 'linear-gradient(45deg, #2196F3 30%, #1565C0 90%)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
@@ -219,15 +221,33 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
               textAlign: 'center'
             }}
           >
-            OpenRCA: Can Large Language Models Locate the Root Cause of Software Failures?
+            <Box component="span" sx={{ whiteSpace: 'nowrap' }}>
+              <Box
+                component="img"
+                src={`${prefix}/openrca_logo_back4.svg`}
+                alt="OpenRCA Logo"
+                sx={{
+                  display: 'inline-block',
+                  height: { xs: 60, md: 80 },
+                  width: 'auto',
+                  verticalAlign: 'text-center',
+                  mr: 1
+                }}
+              />
+              OpenRCA
+            </Box>
+            : Can Large Language Models Locate the Root Cause of Software Failures?
           </Typography>
           <Typography 
             variant="subtitle1" 
             sx={{ 
               mb: 4,
               color: '#424242',
-              lineHeight: 1.8,
-              textAlign: 'center'
+              lineHeight: 1.5,
+              fontSize: { xs: '0.88rem', md: '0.95rem' },
+              textAlign: 'center',
+              maxWidth: '1200px',
+              mx: 'auto'
             }}
           >
             OpenRCA includes 335 failures from three enterprise software systems, along with over 68 GB of telemetry data (logs, metrics, and traces). Given a failure case and its associated telemetry, the LLM is tasked to identify the root cause of the failure, requiring comprehension of software dependencies and reasoning over heterogeneous, long-context telemetry data.
@@ -236,10 +256,11 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
             justifyContent: 'center', 
             alignItems: 'center', 
             gap: 2,
-            mt: -1,
+            mt: 1,
             mb: 1 ,
             ml: 2,
-            zIndex: -1
+            position: 'relative',
+            zIndex: 0
           }}>
             <Box
               component="img"
@@ -269,7 +290,7 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
                 '&:hover': {
                   transform: 'scale(1.05)'
                 },
-                zIndex: 1000
+                zIndex: 0
               }}
             />
             <Box
@@ -398,7 +419,7 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
                 mb: 1
               }}
             >
-              Use the tags below to filter results. The table also indicates whether the scaffold and model are open-source.
+              Use the tags below to filter results. The table also indicates open-source status and whether each method is reproduced by the authors.
             </Typography>
 
             <Box
@@ -610,10 +631,10 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
                         backgroundColor: row.model.includes('*') ? 'rgba(0, 0, 0, 0.02)' : 'inherit'
                       }}
                     >
-                      <TableCell sx={{ width: '22%', textAlign: 'center', fontWeight: 600 }}>
+                      <TableCell sx={{ width: '20%', textAlign: 'center', fontWeight: 600 }}>
                         {row.name}
                       </TableCell>
-                      <TableCell sx={{ width: '18%', textAlign: 'center' }}>
+                      <TableCell sx={{ width: '16%', textAlign: 'center' }}>
                         <Chip 
                           label={row.model}
                           size="small"
@@ -627,7 +648,7 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
                           }}
                         />
                       </TableCell>
-                      <TableCell sx={{ width: '10%', textAlign: 'center' }}>
+                      <TableCell sx={{ width: '9%', textAlign: 'center' }}>
                         <Box
                           component="img"
                           src={orgLogoMap[row.org] || `${prefix}/default_logo.svg`}
@@ -641,7 +662,7 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
                           }}
                         />
                       </TableCell>
-                      <TableCell sx={{ width: '12%', textAlign: 'center' }}>
+                      <TableCell sx={{ width: '10%', textAlign: 'center' }}>
                         <Chip
                           label={row.frameworkOpen ? 'Open' : 'Closed'}
                           size="small"
@@ -653,7 +674,7 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
                           }}
                         />
                       </TableCell>
-                      <TableCell sx={{ width: '12%', textAlign: 'center' }}>
+                      <TableCell sx={{ width: '10%', textAlign: 'center' }}>
                         <Chip
                           label={row.modelOpen ? 'Open' : 'Closed'}
                           size="small"
@@ -665,7 +686,19 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
                           }}
                         />
                       </TableCell>
-                      <TableCell sx={{ width: '8%', textAlign: 'center' }}>
+                      <TableCell sx={{ width: '10%', textAlign: 'center' }}>
+                        <Chip
+                          label={row.reproduced ? 'Yes' : 'No'}
+                          size="small"
+                          sx={{
+                            backgroundColor: row.reproduced ? '#dbeafe' : '#fee2e2',
+                            color: row.reproduced ? '#1e3a8a' : '#991b1b',
+                            fontWeight: 600,
+                            border: `1px solid ${row.reproduced ? '#93c5fd' : '#fecaca'}`
+                          }}
+                        />
+                      </TableCell>
+                      <TableCell sx={{ width: '7%', textAlign: 'center' }}>
                         {row.trajUrl ? (
                           <IconButton
                             size="small"
@@ -687,7 +720,7 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
                       </TableCell>
                       <TableCell 
                         sx={{ 
-                          width: '11%', 
+                          width: '10%', 
                           textAlign: 'center',
                           fontWeight: parseFloat(row.correct) === maxCorrect ? 600 : 'inherit',
                           color: parseFloat(row.correct) === maxCorrect ? '#1976d2' : 'inherit'
@@ -695,7 +728,7 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
                       >
                         {row.correct}
                       </TableCell>
-                      <TableCell sx={{ width: '9%', textAlign: 'center' }}>{row.date}</TableCell>
+                      <TableCell sx={{ width: '8%', textAlign: 'center' }}>{row.date}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
