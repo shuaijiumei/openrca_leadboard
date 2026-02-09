@@ -193,26 +193,34 @@ const Home = () => {
     </Box>
   );
 
+  const statusHeaderLabel = (
+    <Box sx={{ textAlign: 'center', lineHeight: 1.1 }}>
+      <Box component="span" sx={{ display: 'block', fontWeight: 700 }}>Transparency</Box>
+      <Box component="span" sx={{ display: 'block', mt: 0.35, fontSize: '0.78rem', opacity: 0.92 }}>
+        Scaffold / Model / Reproduced
+      </Box>
+    </Box>
+  );
+
   const headCellsOpenRCA: Array<{
     id: OrderByOpenRCA;
     label: string | JSX.Element;
     width: string;
     sortable: boolean;
   }> = [
-    { id: 'name', label: 'Method Name', width: '20%', sortable: false },
+    { id: 'name', label: 'Method Name', width: '28%', sortable: false },
     {
       id: 'model',
       label: modelHeaderLabel,
-      width: '16%',
+      width: '12%',
       sortable: false
     },
-    { id: 'org', label: 'Org.', width: '9%', sortable: false },
-    { id: 'frameworkOpen', label: 'Open Scaffolds', width: '10%', sortable: false },
-    { id: 'modelOpen', label: 'Open Weights', width: '10%', sortable: false },
-    { id: 'reproduced', label: 'Reproduced', width: '10%', sortable: false },
-    { id: 'trajUrl', label: 'Traj.', width: '7%', sortable: false },
-    { id: 'correct', label: 'Correct', width: '10%', sortable: true },
-    { id: 'date', label: 'Date', width: '8%', sortable: true },
+    { id: 'org', label: 'Org.', width: '4%', sortable: false },
+    { id: 'trajUrl', label: 'Traj.', width: '4%', sortable: false },
+    { id: 'frameworkOpen', label: statusHeaderLabel, width: '19%', sortable: false },
+    { id: 'correct', label: 'Correct', width: '9%', sortable: true },
+    { id: 'partialCorrect', label: 'Partial Correct', width: '10%', sortable: true },
+    { id: 'date', label: 'Date', width: '10%', sortable: true },
   ];
 
   const headCellsOpenRCA2: Array<{
@@ -232,36 +240,35 @@ const Home = () => {
       id: 'accuracy',
       label: (
         <Box sx={{ lineHeight: 1.05 }}>
-          <Box component="span" sx={{ display: 'block', fontWeight: 700, letterSpacing: '0.06em' }}>RC F1</Box>
-          <Box component="span" sx={{ display: 'block', opacity: 0.9, mt: 0.35 }}>P / R</Box>
+          <Box component="span" sx={{ display: 'block', fontWeight: 700, letterSpacing: '0.06em' }}>ACC</Box>
         </Box>
       ),
-      width: '9%',
+      width: '8%',
       sortable: true
     },
     {
       id: 'nodeF1',
       label: (
         <Box sx={{ lineHeight: 1.05 }}>
-          <Box component="span" sx={{ display: 'block', fontWeight: 700, letterSpacing: '0.06em' }}>NODE F1</Box>
-          <Box component="span" sx={{ display: 'block', opacity: 0.9, mt: 0.35 }}>P / R</Box>
+          <Box component="span" sx={{ display: 'block', fontWeight: 700, letterSpacing: '0.06em' }}>NODE</Box>
+          <Box component="span" sx={{ display: 'block', opacity: 0.9, mt: 0.35 }}>F1 / P / R</Box>
         </Box>
       ),
-      width: '9%',
+      width: '8%',
       sortable: true
     },
     {
       id: 'edgeF1',
       label: (
         <Box sx={{ lineHeight: 1.05 }}>
-          <Box component="span" sx={{ display: 'block', fontWeight: 700, letterSpacing: '0.06em' }}>EDGE F1</Box>
-          <Box component="span" sx={{ display: 'block', opacity: 0.9, mt: 0.35 }}>P / R</Box>
+          <Box component="span" sx={{ display: 'block', fontWeight: 700, letterSpacing: '0.06em' }}>EDGE</Box>
+          <Box component="span" sx={{ display: 'block', opacity: 0.9, mt: 0.35 }}>F1 / P / R</Box>
         </Box>
       ),
-      width: '9%',
+      width: '8%',
       sortable: true
     },
-    { id: 'date', label: 'Date', width: '8%', sortable: true },
+    { id: 'date', label: 'Date', width: '10%', sortable: true },
   ];
 
   const handleCopyClick = () => {
@@ -670,7 +677,7 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
                               backgroundColor: '#1976d2',
                               color: 'white',
                               fontWeight: 600,
-                              textAlign: 'center'
+                              textAlign: headCell.id === 'name' ? 'left' : 'center'
                             }}
                           >
                             {typeof headCell.label === 'string' ? (
@@ -681,7 +688,7 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
                                   onClick={() => handleRequestSortOpenRCA(headCell.id)}
                                   sx={{
                                     width: '100%',
-                                    justifyContent: 'center',
+                                    justifyContent: headCell.id === 'name' ? 'flex-start' : 'center',
                                     '&.MuiTableSortLabel-root': { color: 'white' },
                                     '&.MuiTableSortLabel-root:hover': { color: 'white' },
                                     '&.Mui-active': { color: 'white' },
@@ -709,10 +716,10 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
                             backgroundColor: row.model.includes('*') ? 'rgba(0, 0, 0, 0.02)' : 'inherit'
                           }}
                         >
-                          <TableCell sx={{ width: '20%', textAlign: 'center', fontWeight: 600 }}>
+                          <TableCell sx={{ width: '28%', textAlign: 'left', fontWeight: 600 }}>
                             {row.name}
                           </TableCell>
-                          <TableCell sx={{ width: '16%', textAlign: 'center' }}>
+                          <TableCell sx={{ width: '14%', textAlign: 'center' }}>
                             <Chip
                               label={row.model}
                               size="small"
@@ -726,7 +733,7 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
                               }}
                             />
                           </TableCell>
-                          <TableCell sx={{ width: '9%', textAlign: 'center' }}>
+                          <TableCell sx={{ width: '7%', textAlign: 'center' }}>
                             <Box
                               component="img"
                               src={orgLogoMap[row.org] || `${prefix}/default_logo.svg`}
@@ -740,43 +747,7 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
                               }}
                             />
                           </TableCell>
-                          <TableCell sx={{ width: '10%', textAlign: 'center' }}>
-                            <Chip
-                              label={row.frameworkOpen ? 'Open' : 'Closed'}
-                              size="small"
-                              sx={{
-                                backgroundColor: row.frameworkOpen ? '#dcfce7' : '#fee2e2',
-                                color: row.frameworkOpen ? '#166534' : '#991b1b',
-                                fontWeight: 600,
-                                border: `1px solid ${row.frameworkOpen ? '#86efac' : '#fecaca'}`
-                              }}
-                            />
-                          </TableCell>
-                          <TableCell sx={{ width: '10%', textAlign: 'center' }}>
-                            <Chip
-                              label={row.modelOpen ? 'Open' : 'Closed'}
-                              size="small"
-                              sx={{
-                                backgroundColor: row.modelOpen ? '#e0f2fe' : '#fee2e2',
-                                color: row.modelOpen ? '#075985' : '#991b1b',
-                                fontWeight: 600,
-                                border: `1px solid ${row.modelOpen ? '#7dd3fc' : '#fecaca'}`
-                              }}
-                            />
-                          </TableCell>
-                          <TableCell sx={{ width: '10%', textAlign: 'center' }}>
-                            <Chip
-                              label={row.reproduced ? 'Yes' : 'No'}
-                              size="small"
-                              sx={{
-                                backgroundColor: row.reproduced ? '#dbeafe' : '#fee2e2',
-                                color: row.reproduced ? '#1e3a8a' : '#991b1b',
-                                fontWeight: 600,
-                                border: `1px solid ${row.reproduced ? '#93c5fd' : '#fecaca'}`
-                              }}
-                            />
-                          </TableCell>
-                          <TableCell sx={{ width: '7%', textAlign: 'center' }}>
+                          <TableCell sx={{ width: '6%', textAlign: 'center' }}>
                             {row.trajUrl ? (
                               <IconButton
                                 size="small"
@@ -796,9 +767,29 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
                               <Typography variant="body2" sx={{ color: '#94a3b8' }}>—</Typography>
                             )}
                           </TableCell>
+                          <TableCell sx={{ width: '19%', textAlign: 'center' }}>
+                            <Box
+                              sx={{
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: 0.6,
+                                px: 1.2,
+                                py: 0.35,
+                                borderRadius: '999px',
+                                backgroundColor: '#f8fafc',
+                                border: '1px solid #dbeafe'
+                              }}
+                            >
+                              <Box component="span">{row.frameworkOpen ? '✅' : '❌'}</Box>
+                              <Box component="span" sx={{ color: '#94a3b8', fontSize: '0.85rem' }}>/</Box>
+                              <Box component="span">{row.modelOpen ? '✅' : '❌'}</Box>
+                              <Box component="span" sx={{ color: '#94a3b8', fontSize: '0.85rem' }}>/</Box>
+                              <Box component="span">{row.reproduced ? '✅' : '❌'}</Box>
+                            </Box>
+                          </TableCell>
                           <TableCell
                             sx={{
-                              width: '10%',
+                              width: '9%',
                               textAlign: 'center',
                               fontWeight: parseFloat(row.correct) === maxCorrect ? 600 : 'inherit',
                               color: parseFloat(row.correct) === maxCorrect ? '#1976d2' : 'inherit'
@@ -806,7 +797,10 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
                           >
                             {row.correct}
                           </TableCell>
-                          <TableCell sx={{ width: '8%', textAlign: 'center' }}>{row.date}</TableCell>
+                          <TableCell sx={{ width: '10%', textAlign: 'center' }}>
+                            {row.partialCorrect ?? '—'}
+                          </TableCell>
+                          <TableCell sx={{ width: '10%', textAlign: 'center' }}>{row.date}</TableCell>
                         </TableRow>
                       ))}
                     </TableBody>
@@ -824,7 +818,7 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
                               backgroundColor: '#1976d2',
                               color: 'white',
                               fontWeight: 600,
-                              textAlign: 'center'
+                              textAlign: headCell.id === 'name' ? 'left' : 'center'
                             }}
                           >
                             {typeof headCell.label === 'string' ? (
@@ -835,7 +829,7 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
                                   onClick={() => handleRequestSortOpenRCA2(headCell.id)}
                                   sx={{
                                     width: '100%',
-                                    justifyContent: 'center',
+                                    justifyContent: headCell.id === 'name' ? 'flex-start' : 'center',
                                     '&.MuiTableSortLabel-root': { color: 'white' },
                                     '&.MuiTableSortLabel-root:hover': { color: 'white' },
                                     '&.Mui-active': { color: 'white' },
@@ -863,10 +857,10 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
                             backgroundColor: row.model.includes('*') ? 'rgba(0, 0, 0, 0.02)' : 'inherit'
                           }}
                         >
-                          <TableCell sx={{ width: '18%', textAlign: 'center', fontWeight: 600 }}>
+                          <TableCell sx={{ width: '26%', textAlign: 'left', fontWeight: 600 }}>
                             {row.name}
                           </TableCell>
-                          <TableCell sx={{ width: '14%', textAlign: 'center' }}>
+                          <TableCell sx={{ width: '13%', textAlign: 'center' }}>
                             <Chip
                               label={row.model}
                               size="small"
@@ -880,7 +874,7 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
                               }}
                             />
                           </TableCell>
-                          <TableCell sx={{ width: '8%', textAlign: 'center' }}>
+                          <TableCell sx={{ width: '7%', textAlign: 'center' }}>
                             <Box
                               component="img"
                               src={orgLogoMap[row.org] || `${prefix}/default_logo.svg`}
@@ -888,43 +882,7 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
                               sx={{ height: 20, width: 'auto', objectFit: 'contain' }}
                             />
                           </TableCell>
-                          <TableCell sx={{ width: '9%', textAlign: 'center' }}>
-                            <Chip
-                              label={row.frameworkOpen ? 'Open' : 'Closed'}
-                              size="small"
-                              sx={{
-                                backgroundColor: row.frameworkOpen ? '#dcfce7' : '#fee2e2',
-                                color: row.frameworkOpen ? '#166534' : '#991b1b',
-                                fontWeight: 600,
-                                border: `1px solid ${row.frameworkOpen ? '#86efac' : '#fecaca'}`
-                              }}
-                            />
-                          </TableCell>
-                          <TableCell sx={{ width: '9%', textAlign: 'center' }}>
-                            <Chip
-                              label={row.modelOpen ? 'Open' : 'Closed'}
-                              size="small"
-                              sx={{
-                                backgroundColor: row.modelOpen ? '#e0f2fe' : '#fee2e2',
-                                color: row.modelOpen ? '#075985' : '#991b1b',
-                                fontWeight: 600,
-                                border: `1px solid ${row.modelOpen ? '#7dd3fc' : '#fecaca'}`
-                              }}
-                            />
-                          </TableCell>
-                          <TableCell sx={{ width: '9%', textAlign: 'center' }}>
-                            <Chip
-                              label={row.reproduced ? 'Yes' : 'No'}
-                              size="small"
-                              sx={{
-                                backgroundColor: row.reproduced ? '#dbeafe' : '#fee2e2',
-                                color: row.reproduced ? '#1e3a8a' : '#991b1b',
-                                fontWeight: 600,
-                                border: `1px solid ${row.reproduced ? '#93c5fd' : '#fecaca'}`
-                              }}
-                            />
-                          </TableCell>
-                          <TableCell sx={{ width: '6%', textAlign: 'center' }}>
+                          <TableCell sx={{ width: '5%', textAlign: 'center' }}>
                             {row.trajUrl ? (
                               <IconButton
                                 size="small"
@@ -944,9 +902,29 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
                               <Typography variant="body2" sx={{ color: '#94a3b8' }}>—</Typography>
                             )}
                           </TableCell>
+                          <TableCell sx={{ width: '18%', textAlign: 'center' }}>
+                            <Box
+                              sx={{
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: 0.6,
+                                px: 1.2,
+                                py: 0.35,
+                                borderRadius: '999px',
+                                backgroundColor: '#f8fafc',
+                                border: '1px solid #dbeafe'
+                              }}
+                            >
+                              <Box component="span">{row.frameworkOpen ? '✅' : '❌'}</Box>
+                              <Box component="span" sx={{ color: '#94a3b8', fontSize: '0.85rem' }}>/</Box>
+                              <Box component="span">{row.modelOpen ? '✅' : '❌'}</Box>
+                              <Box component="span" sx={{ color: '#94a3b8', fontSize: '0.85rem' }}>/</Box>
+                              <Box component="span">{row.reproduced ? '✅' : '❌'}</Box>
+                            </Box>
+                          </TableCell>
                           <TableCell
                             sx={{
-                              width: '9%',
+                              width: '8%',
                               textAlign: 'center',
                               fontWeight: parseFloat(row.accuracy) === maxAccuracy ? 600 : 'inherit',
                               color: parseFloat(row.accuracy) === maxAccuracy ? '#1976d2' : 'inherit'
@@ -956,7 +934,7 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
                           </TableCell>
                           <TableCell
                             sx={{
-                              width: '9%',
+                              width: '8%',
                               textAlign: 'center',
                               fontWeight: parseFloat(row.nodeF1) === maxNodeF1 ? 600 : 'inherit',
                               color: parseFloat(row.nodeF1) === maxNodeF1 ? '#1976d2' : 'inherit'
@@ -966,7 +944,7 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
                           </TableCell>
                           <TableCell
                             sx={{
-                              width: '9%',
+                              width: '8%',
                               textAlign: 'center',
                               fontWeight: parseFloat(row.edgeF1) === maxEdgeF1 ? 600 : 'inherit',
                               color: parseFloat(row.edgeF1) === maxEdgeF1 ? '#1976d2' : 'inherit'
@@ -974,7 +952,7 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
                           >
                             {row.edgeF1}
                           </TableCell>
-                          <TableCell sx={{ width: '8%', textAlign: 'center' }}>{row.date}</TableCell>
+                          <TableCell sx={{ width: '10%', textAlign: 'center' }}>{row.date}</TableCell>
                         </TableRow>
                       ))}
                     </TableBody>
