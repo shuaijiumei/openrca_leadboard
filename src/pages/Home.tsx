@@ -207,8 +207,8 @@ const Home = () => {
       sortable: false
     },
     { id: 'org', label: 'Org.', width: '9%', sortable: false },
-    { id: 'frameworkOpen', label: 'Scaffold Open', width: '10%', sortable: false },
-    { id: 'modelOpen', label: 'Model Open', width: '10%', sortable: false },
+    { id: 'frameworkOpen', label: 'Open Scaffolds', width: '10%', sortable: false },
+    { id: 'modelOpen', label: 'Open Weights', width: '10%', sortable: false },
     { id: 'reproduced', label: 'Reproduced', width: '10%', sortable: false },
     { id: 'trajUrl', label: 'Traj.', width: '7%', sortable: false },
     { id: 'correct', label: 'Correct', width: '10%', sortable: true },
@@ -224,8 +224,8 @@ const Home = () => {
     { id: 'name', label: 'Method Name', width: '18%', sortable: false },
     { id: 'model', label: modelHeaderLabel, width: '14%', sortable: false },
     { id: 'org', label: 'Org.', width: '8%', sortable: false },
-    { id: 'frameworkOpen', label: 'Scaffold Open', width: '9%', sortable: false },
-    { id: 'modelOpen', label: 'Model Open', width: '9%', sortable: false },
+    { id: 'frameworkOpen', label: 'Open Scaffolds', width: '9%', sortable: false },
+    { id: 'modelOpen', label: 'Open Weights', width: '9%', sortable: false },
     { id: 'reproduced', label: 'Reproduced', width: '9%', sortable: false },
     { id: 'trajUrl', label: 'Traj.', width: '6%', sortable: false },
     {
@@ -470,7 +470,7 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
                       : '0 6px 16px rgba(15, 23, 42, 0.08)'
                   }}
                 >
-                  OpenRCA 1.0 Leaderboard
+                  OpenRCA 1.0
                 </AntButton>
                 <AntButton
                   size="large"
@@ -490,7 +490,7 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
                       : '0 6px 16px rgba(15, 23, 42, 0.08)'
                   }}
                 >
-                  OpenRCA 2.0 Leaderboard
+                  OpenRCA 2.0 [Preview]
                 </AntButton>
               </Space.Compact>
             </Box>
@@ -555,7 +555,7 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
                   boxShadow: filterRcaAgent ? '0 10px 20px rgba(124, 58, 237, 0.25)' : 'none'
                 }}
               >
-                Python-only*
+                Standard*
               </AntButton>
               <AntButton
                 type={filterFrameworkOpen ? 'primary' : 'default'}
@@ -577,7 +577,7 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
                   boxShadow: filterFrameworkOpen ? '0 10px 20px rgba(16, 185, 129, 0.25)' : 'none'
                 }}
               >
-                Scaffold Open
+                Open Scaffolds
               </AntButton>
               <AntButton
                 type={filterModelOpen ? 'primary' : 'default'}
@@ -599,7 +599,7 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
                   boxShadow: filterModelOpen ? '0 10px 20px rgba(245, 158, 11, 0.25)' : 'none'
                 }}
               >
-                Model Open
+                Open Weights
               </AntButton>
             </Box>
 
@@ -612,7 +612,7 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
                 mb: 1.5
               }}
             >
-              * Python-only denotes the RCA-Agent introduced in our paper.
+              * Standard harness: using RCA-Agent as the scaffold.
             </Typography>
             
             <TableContainer 
