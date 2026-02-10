@@ -29,7 +29,9 @@ export const modelColorMap: { [key: string]: { color: string, backgroundColor: s
   'Claude 4.5 Opus': { color: '#283593', backgroundColor: '#c5cae9' },
   'Claude 3.5 Sonnet': { color: '#1a237e', backgroundColor: '#e8eaf6' },
   'GPT-4o': { color: '#004d40', backgroundColor: '#e0f2f1' },
+  'GPT-5.2': { color: '#00695c', backgroundColor: '#b2dfdb' },
   'Gemini 1.5 Pro': { color: '#b71c1c', backgroundColor: '#ffebee' },
+  'Gemini 3 Pro': { color: '#c62828', backgroundColor: '#ffcdd2' },
   'Mistral Large 2': { color: '#0d47a1', backgroundColor: '#bbdefb' },
   'Command R+': { color: '#4a148c', backgroundColor: '#e1bee7' },
   'Llama 3.1 Instruct': { color: '#e65100', backgroundColor: '#ffe0b2' }
@@ -58,7 +60,13 @@ export const news = [
 
 // 模型数据
 export const modelDataOpenRCA: Data[] = [
-  { name: 'Claude Agent SDK & SRE Tool MCP', model: 'Claude 4.5 Opus', org: 'Anthropic', correct: '91.5%', date: '2026/1/17', frameworkOpen: false, modelOpen: false, trajUrl: 'https://example.com/traj/claude-agent-sdk' },
+  { name: 'Claude Agent SDK & SRE Tool MCP', model: 'Claude 4.5 Opus', org: 'Anthropic', correct: '86.57%', date: '2026/1/17', frameworkOpen: false, modelOpen: false, trajUrl: 'https://example.com/traj/claude-agent-sdk' },
+  
+  // New baselines - RCA-Agent
+  { name: 'RCA-Agent', model: 'Claude 4.5 Opus', org: 'OpenRCA', correct: '28.36%', date: '2026/2/10', frameworkOpen: true, modelOpen: false, trajUrl: 'https://example.com/traj/rca-agent-claude' },
+  { name: 'RCA-Agent', model: 'GPT-5.2', org: 'OpenRCA', correct: '19.40%', date: '2026/2/10', frameworkOpen: true, modelOpen: false, trajUrl: 'https://example.com/traj/rca-agent-gpt4o' },
+  { name: 'RCA-Agent', model: 'Gemini 3 Pro', org: 'OpenRCA', correct: '12.54%', date: '2026/2/10', frameworkOpen: true, modelOpen: false, trajUrl: 'https://example.com/traj/rca-agent-gemini' },
+  
   // Closed Models - RCA-Agent
   { name: 'RCA-Agent', model: 'Claude 3.5 Sonnet', org: 'OpenRCA', correct: '11.34%', date: '2025/1/23', frameworkOpen: true, modelOpen: false, trajUrl: 'https://example.com/traj/rca-agent-claude' },
   { name: 'RCA-Agent', model: 'GPT-4o', org: 'OpenRCA', correct: '8.96%', date: '2025/1/23', frameworkOpen: true, modelOpen: false, trajUrl: 'https://example.com/traj/rca-agent-gpt4o' },
