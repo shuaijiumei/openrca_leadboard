@@ -65,7 +65,7 @@ export const modelDataOpenRCA: Data[] = [
   { name: 'Claude Agent SDK & SRE Tool MCP', model: 'Claude 4.5 Opus', org: 'Anthropic', correct: '86.57%', date: '2026/1/17', frameworkOpen: false, modelOpen: false, trajUrl: 'https://example.com/traj/claude-agent-sdk' },
   
   // New baselines - RCA-Agent
-  { name: 'RCA-Agent', model: 'Claude 4.6 Opus', org: 'OpenRCA', correct: '28.36%', date: '2026/2/10', frameworkOpen: true, modelOpen: false, trajUrl: 'https://example.com/traj/rca-agent-claude' },
+  { name: 'RCA-Agent', model: 'Claude 4.6 Opus', org: 'OpenRCA', correct: '36.42%', date: '2026/2/10', frameworkOpen: true, modelOpen: false, trajUrl: 'https://example.com/traj/rca-agent-claude' },
   { name: 'RCA-Agent', model: 'Claude 4.5 Opus', org: 'OpenRCA', correct: '28.36%', date: '2026/2/10', frameworkOpen: true, modelOpen: false, trajUrl: 'https://example.com/traj/rca-agent-claude' },
   { name: 'RCA-Agent', model: 'GPT-5.2', org: 'OpenRCA', correct: '19.40%', date: '2026/2/10', frameworkOpen: true, modelOpen: false, trajUrl: 'https://example.com/traj/rca-agent-gpt4o' },
   { name: 'RCA-Agent', model: 'Gemini 3 Pro', org: 'OpenRCA', correct: '12.54%', date: '2026/2/10', frameworkOpen: true, modelOpen: false, trajUrl: 'https://example.com/traj/rca-agent-gemini' },
