@@ -26,6 +26,7 @@ const prefix = import.meta.env.BASE_URL.replace(/\/$/, '')
 
 // 模型颜色映射
 export const modelColorMap: { [key: string]: { color: string, backgroundColor: string } } = {
+  'Claude 4.6 Opus': { color: '#0d1b4d', backgroundColor: '#9fa8da' },
   'Claude 4.5 Opus': { color: '#283593', backgroundColor: '#c5cae9' },
   'Claude 3.5 Sonnet': { color: '#1a237e', backgroundColor: '#e8eaf6' },
   'GPT-4o': { color: '#004d40', backgroundColor: '#e0f2f1' },
@@ -60,9 +61,11 @@ export const news = [
 
 // 模型数据
 export const modelDataOpenRCA: Data[] = [
+  { name: 'Claude Agent SDK & SRE Tool MCP', model: 'Claude 4.6 Opus', org: 'Anthropic', correct: '87.46%', date: '2026/2/10', frameworkOpen: false, modelOpen: false, trajUrl: 'https://example.com/traj/claude-agent-sdk' },
   { name: 'Claude Agent SDK & SRE Tool MCP', model: 'Claude 4.5 Opus', org: 'Anthropic', correct: '86.57%', date: '2026/1/17', frameworkOpen: false, modelOpen: false, trajUrl: 'https://example.com/traj/claude-agent-sdk' },
   
   // New baselines - RCA-Agent
+  { name: 'RCA-Agent', model: 'Claude 4.6 Opus', org: 'OpenRCA', correct: '28.36%', date: '2026/2/10', frameworkOpen: true, modelOpen: false, trajUrl: 'https://example.com/traj/rca-agent-claude' },
   { name: 'RCA-Agent', model: 'Claude 4.5 Opus', org: 'OpenRCA', correct: '28.36%', date: '2026/2/10', frameworkOpen: true, modelOpen: false, trajUrl: 'https://example.com/traj/rca-agent-claude' },
   { name: 'RCA-Agent', model: 'GPT-5.2', org: 'OpenRCA', correct: '19.40%', date: '2026/2/10', frameworkOpen: true, modelOpen: false, trajUrl: 'https://example.com/traj/rca-agent-gpt4o' },
   { name: 'RCA-Agent', model: 'Gemini 3 Pro', org: 'OpenRCA', correct: '12.54%', date: '2026/2/10', frameworkOpen: true, modelOpen: false, trajUrl: 'https://example.com/traj/rca-agent-gemini' },
