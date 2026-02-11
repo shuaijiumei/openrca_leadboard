@@ -51,18 +51,16 @@ export const orgLogoMap: { [key: string]: string } = {
 
 // 新闻数据
 export const news = [
-  {
-    date: '2026/1/17',
-    content: "🎉🎉🎉 Anthropic's Claude 4.5 Opus + Claude Agent SDK & SRE Tool MCP achieves SOTA"
-  },
+  {date: '2026/2/10', content: "New model baselines with RCA-Agent scaffolds are released."},
+  // {date: '2026/1/17', content: "Anthropic's Claude 4.5 Opus + Claude Agent SDK & SRE Tool MCP achieves SOTA"},
   { date: '2025/12/22', content: 'Our AIOps dataset study paper has been accepted by FSE 2026.' },
   { date: '2025/1/23', content: 'Our OpenRCA benchmark paper has been accepted by ICLR 2025.' }
 ];
 
 // 模型数据
 export const modelDataOpenRCA: Data[] = [
-  { name: 'Claude Agent SDK & SRE Tool MCP', model: 'Claude 4.6 Opus', org: 'Anthropic', correct: '87.46%', date: '2026/2/10', frameworkOpen: false, modelOpen: false, trajUrl: 'https://example.com/traj/claude-agent-sdk' },
-  { name: 'Claude Agent SDK & SRE Tool MCP', model: 'Claude 4.5 Opus', org: 'Anthropic', correct: '86.57%', date: '2026/1/17', frameworkOpen: false, modelOpen: false, trajUrl: 'https://example.com/traj/claude-agent-sdk' },
+  // { name: 'Claude Agent SDK & SRE Tool MCP', model: 'Claude 4.6 Opus', org: 'Anthropic', correct: '87.46%', date: '2026/2/10', frameworkOpen: false, modelOpen: false, trajUrl: 'https://example.com/traj/claude-agent-sdk' },
+  // { name: 'Claude Agent SDK & SRE Tool MCP', model: 'Claude 4.5 Opus', org: 'Anthropic', correct: '86.57%', date: '2026/1/17', frameworkOpen: false, modelOpen: false, trajUrl: 'https://example.com/traj/claude-agent-sdk' },
   
   // New baselines - RCA-Agent
   { name: 'RCA-Agent', model: 'Claude 4.6 Opus', org: 'OpenRCA', correct: '36.42%', date: '2026/2/10', frameworkOpen: true, modelOpen: false, trajUrl: 'https://example.com/traj/rca-agent-claude' },
