@@ -516,7 +516,7 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
               ) : (
                 <Box component="ul" sx={{ m: 0, pl: 2.5, color: '#374151', fontSize: '0.875rem', lineHeight: 1.8 }}>
                   <li>Focuses on pure RCA tasks for known incidents; anomaly detection is no longer included.</li>
-                  <li>SKI-threshold filtering ensures user-perceivable service impact.</li>
+                  <li>SLI-threshold filtering ensures user-perceivable service impact.</li>
                   <li>Deep instrumentation guarantees fault propagation with observable cascading symptoms.</li>
                   <li>More complex fault types and significantly larger data volume.</li>
                   <li>Tests the model's causal inference and reasoning capabilities.</li>
