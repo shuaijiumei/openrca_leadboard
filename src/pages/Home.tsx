@@ -130,6 +130,9 @@ const Home = () => {
   const maxAccuracy = filteredAndSortedDataOpenRCA2.length > 0
     ? Math.max(...filteredAndSortedDataOpenRCA2.map(row => parseFloat(row.accuracy)))
     : 0;
+  const maxRcF1 = filteredAndSortedDataOpenRCA2.length > 0
+    ? Math.max(...filteredAndSortedDataOpenRCA2.map(row => parseFloat(row.rcAcc)))
+    : 0;
   const maxNodeF1 = filteredAndSortedDataOpenRCA2.length > 0
     ? Math.max(...filteredAndSortedDataOpenRCA2.map(row => parseFloat(row.nodeF1)))
     : 0;
@@ -233,7 +236,13 @@ const Home = () => {
     { id: 'org', label: 'Org.', width: '7%', sortable: false },
     { id: 'trajUrl', label: 'Traj.', width: '5%', sortable: false },
     { id: 'frameworkOpen', label: statusHeaderLabel, width: '22%', sortable: false },
-    { id: 'accuracy', label: 'Acc.', width: '8%', sortable: true },
+    { id: 'accuracy', label: 'Acc.', width: '7%', sortable: true },
+    {
+      id: 'rcAcc',
+      label: (<span style={{ whiteSpace: 'nowrap' }}>Acc.(RC)</span>),
+      width: '7%',
+      sortable: true
+    },
     {
       id: 'nodeF1',
       label: (
@@ -948,6 +957,16 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
                             }}
                           >
                             {row.accuracy}
+                          </TableCell>
+                          <TableCell
+                            sx={{
+                              width: '7%',
+                              textAlign: 'center',
+                              fontWeight: parseFloat(row.rcAcc) === maxRcF1 ? 600 : 'inherit',
+                              color: parseFloat(row.rcAcc) === maxRcF1 ? '#1976d2' : 'inherit'
+                            }}
+                          >
+                            {row.rcAcc}
                           </TableCell>
                           <TableCell
                             sx={{
