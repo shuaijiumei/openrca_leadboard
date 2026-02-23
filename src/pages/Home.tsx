@@ -61,7 +61,7 @@ const Home = () => {
   const [filterRcaAgent, setFilterRcaAgent] = useState(false);
   const [filterFrameworkOpen, setFilterFrameworkOpen] = useState(false);
   const [filterModelOpen, setFilterModelOpen] = useState(false);
-  const [activeDataset, setActiveDataset] = useState<'OpenRCA' | 'OpenRCA 2.0'>('OpenRCA');
+  const [activeDataset, setActiveDataset] = useState<'OpenRCA' | 'OpenRCA 2.0'>('OpenRCA 2.0');
 
   const handleRequestSortOpenRCA = (property: OrderByOpenRCA) => {
     const isAsc = orderByOpenRCA === property && orderOpenRCA === 'asc';
@@ -108,7 +108,7 @@ const Home = () => {
       .filter(row => selectedModels.includes(row.model))
       .filter(row => {
       if (!filterAll && isSpecificTagActive) {
-        if (filterRcaAgent && row.name !== 'RCA-Agent') return false;
+        if (filterRcaAgent && row.name !== 'RCA-Agent' && row.name !== 'DeepResearch') return false;
         if (filterFrameworkOpen && !row.frameworkOpen) return false;
         if (filterModelOpen && !row.modelOpen) return false;
       }
@@ -490,6 +490,32 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
               </Space.Compact>
             </Box>
 
+            <Box sx={{
+              mb: 2,
+              px: 2,
+              py: 1.5,
+              backgroundColor: activeDataset === 'OpenRCA' ? 'rgba(21, 101, 192, 0.04)' : 'rgba(124, 58, 237, 0.04)',
+              borderLeft: activeDataset === 'OpenRCA' ? '3px solid #1565C0' : '3px solid #7c3aed',
+              borderRadius: '0 8px 8px 0',
+            }}>
+              {activeDataset === 'OpenRCA' ? (
+                <Box component="ul" sx={{ m: 0, pl: 2.5, color: '#374151', fontSize: '0.875rem', lineHeight: 1.8 }}>
+                  <li>Faults and telemetry data from three heterogeneous systems.</li>
+                  <li>Agents must identify one or more faulty elements from global offline data.</li>
+                  <li>Tests the model's ability to recognize global fault patterns.</li>
+                </Box>
+              ) : (
+                <Box component="ul" sx={{ m: 0, pl: 2.5, color: '#374151', fontSize: '0.875rem', lineHeight: 1.8 }}>
+                  <li>Focuses on pure RCA tasks for known incidents; anomaly detection is no longer included.</li>
+                  <li>SKI-threshold filtering ensures user-perceivable service impact.</li>
+                  <li>Deep instrumentation guarantees fault propagation with observable cascading symptoms.</li>
+                  <li>More complex fault types and significantly larger data volume.</li>
+                  <li>Tests the model's causal inference and reasoning capabilities.</li>
+                  <li><em>Note: This is a preview version of OpenRCA 2.0. Official code and dataset will be released soon.</em></li>
+                </Box>
+              )}
+            </Box>
+
             <Typography
               variant="body2"
               sx={{
@@ -607,7 +633,9 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
                 mb: 1.5
               }}
             >
-              * Standard harness: using RCA-Agent as the scaffold.
+              {activeDataset === 'OpenRCA'
+                ? '* Standard harness: using official RCA-Agent scaffold for each dataset.'
+                : '* Standard harness: using DeepResearch as the default method for OpenRCA 2.0.'}
             </Typography>
             
             <TableContainer 
@@ -949,10 +977,13 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
                 )}
               </Table>
             </TableContainer>
+            <Typography variant="caption" sx={{ display: 'block', mt: 1, ml: 1, color: '#6b7280', fontSize: '0.75rem' }}>
+              Note: All data is collected in China. Please use <strong>UTC+8</strong> timezone when converting timestamps to datetime.
+            </Typography>
           </Box>
 
-          <Box sx={{ 
-            mt: 4, 
+          <Box sx={{
+            mt: 4,
             p: 3,
             backgroundColor: '#E65100',
             borderRadius: '12px',

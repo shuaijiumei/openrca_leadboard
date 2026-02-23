@@ -35,7 +35,14 @@ export const modelColorMap: { [key: string]: { color: string, backgroundColor: s
   'Gemini 3 Pro': { color: '#c62828', backgroundColor: '#ffcdd2' },
   'Mistral Large 2': { color: '#0d47a1', backgroundColor: '#bbdefb' },
   'Command R+': { color: '#4a148c', backgroundColor: '#e1bee7' },
-  'Llama 3.1 Instruct': { color: '#e65100', backgroundColor: '#ffe0b2' }
+  'Llama 3.1 Instruct': { color: '#e65100', backgroundColor: '#ffe0b2' },
+  'GLM-4.7': { color: '#1565c0', backgroundColor: '#bbdefb' },
+  'Claude 4.5 Sonnet': { color: '#1a237e', backgroundColor: '#e8eaf6' },
+  'GPT-5.1': { color: '#004d40', backgroundColor: '#e0f2f1' },
+  'Kimi K2': { color: '#4e342e', backgroundColor: '#d7ccc8' },
+  'Qwen3-32B': { color: '#6a1b9a', backgroundColor: '#e1bee7' },
+  'Qwen3-Next-80B': { color: '#7b1fa2', backgroundColor: '#f3e5f5' },
+  'Seed 1.6': { color: '#33691e', backgroundColor: '#dcedc8' }
 };
 
 // 组织图标映射
@@ -51,6 +58,7 @@ export const orgLogoMap: { [key: string]: string } = {
 
 // 新闻数据
 export const news = [
+  {date: '2026/2/23', content: "OpenRCA 2.0 preview evaluation results are released."},
   {date: '2026/2/10', content: "New model baselines with RCA-Agent scaffolds are released."},
   // {date: '2026/1/17', content: "Anthropic's Claude 4.5 Opus + Claude Agent SDK & SRE Tool MCP achieves SOTA"},
   { date: '2025/12/22', content: 'Our AIOps dataset study paper has been accepted by FSE 2026.' },
@@ -99,78 +107,11 @@ export const modelDataOpenRCA: Data[] = [
 
 // Mock data for OpenRCA 2.0 (placeholder)
 export const modelDataOpenRCA2: DataOpenRCA2[] = [
-  // {
-  //   name: 'Claude Agent SDK & SRE Tool MCP',
-  //   model: 'Claude 4.5 Opus',
-  //   org: 'Anthropic',
-  //   accuracy: '84.2%',
-  //   nodeF1: '84.7/87.4/82.1',
-  //   edgeF1: '77.1/79.0/75.3',
-  //   date: '2026/1/17',
-  //   frameworkOpen: false,
-  //   modelOpen: false,
-  //   reproduced: false,
-  //   trajUrl: 'https://example.com/traj/openrca2-claude-agent'
-  // },
-  // {
-  //   name: 'RCA-Agent',
-  //   model: 'GPT-4o',
-  //   org: 'None',
-  //   accuracy: '71.6%',
-  //   nodeF1: '72.3/74.9/69.8',
-  //   edgeF1: '63.8/66.3/61.5',
-  //   date: '2026/1/20',
-  //   frameworkOpen: true,
-  //   modelOpen: false,
-  //   reproduced: true,
-  //   trajUrl: 'https://example.com/traj/openrca2-gpt4o'
-  // },
-  // {
-  //   name: 'RCA-Agent',
-  //   model: 'Gemini 1.5 Pro',
-  //   org: 'Google',
-  //   accuracy: '67.8%',
-  //   nodeF1: '68.8/71.0/66.7',
-  //   edgeF1: '60.2/62.4/58.1',
-  //   date: '2026/1/20',
-  //   frameworkOpen: true,
-  //   modelOpen: false,
-  //   reproduced: true
-  // },
-  // {
-  //   name: 'Prompting (Oracle)',
-  //   model: 'Claude 3.5 Sonnet',
-  //   org: 'None',
-  //   accuracy: '63.5%',
-  //   nodeF1: '66.4/68.8/64.1',
-  //   edgeF1: '57.3/59.6/55.2',
-  //   date: '2026/1/18',
-  //   frameworkOpen: true,
-  //   modelOpen: false,
-  //   reproduced: true
-  // },
-  // {
-  //   name: 'Prompting (Balanced)',
-  //   model: 'Mistral Large 2',
-  //   org: 'None',
-  //   accuracy: '55.9%',
-  //   nodeF1: '58.1/60.4/56.0',
-  //   edgeF1: '49.8/52.1/47.6',
-  //   date: '2026/1/18',
-  //   frameworkOpen: true,
-  //   modelOpen: true,
-  //   reproduced: true
-  // },
-  // {
-  //   name: 'Prompting (Balanced)',
-  //   model: 'Llama 3.1 Instruct',
-  //   org: 'Meta',
-  //   accuracy: '52.7%',
-  //   nodeF1: '55.6/57.8/53.5',
-  //   edgeF1: '47.6/49.7/45.8',
-  //   date: '2026/1/19',
-  //   frameworkOpen: true,
-  //   modelOpen: true,
-  //   reproduced: true
-  // }
+  { name: 'DeepResearch', model: 'GLM-4.7', org: 'OpenRCA', accuracy: '60.3%', nodeF1: "64.6/75/61", edgeF1:"28.7/40/26", date: '2026/2/23', frameworkOpen: true, modelOpen: true},
+  { name: 'DeepResearch', model: 'Claude 4.5 Sonnet', org: 'OpenRCA', accuracy: '76.6%', nodeF1: "69.0/83/63", edgeF1:"53.0/75/46", date: '2026/2/23', frameworkOpen: true, modelOpen: false },
+  { name: 'DeepResearch', model: 'GPT-5.1', org: 'OpenRCA', accuracy: '62.8%', nodeF1: "70.4/72/78", edgeF1:"46.2/54/49", date: '2026/2/23', frameworkOpen: true, modelOpen: false },
+  { name: 'DeepResearch', model: 'Kimi K2', org: 'OpenRCA', accuracy: '58.4%', nodeF1: "67.2/81/62", edgeF1:"46.5/68/40", date: '2026/2/23', frameworkOpen: true, modelOpen: false },
+  { name: 'DeepResearch', model: 'Qwen3-32B', org: 'OpenRCA', accuracy: '31.4%', nodeF1: "51.6/79/41", edgeF1:"18.2/33/14", date: '2026/2/23', frameworkOpen: true, modelOpen: true },
+  { name: 'DeepResearch', model: 'Qwen3-Next-80B', org: 'OpenRCA', accuracy: '39.2%', nodeF1: "57.8/76/50", edgeF1:"28.3/48/23", date: '2026/2/23', frameworkOpen: true, modelOpen: true },
+  { name: 'DeepResearch', model: 'Seed 1.6', org: 'OpenRCA', accuracy: '42.2%', nodeF1: "62.0/79/56", edgeF1:"41.8/64/35", date: '2026/2/23', frameworkOpen: true, modelOpen: false },
 ];
