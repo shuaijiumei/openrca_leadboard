@@ -14,7 +14,7 @@ export interface DataOpenRCA2 {
   model: string;
   org: string;
   accuracy: string;
-  rcAcc: string;
+  rcF1: string;
   nodeF1: string;
   edgeF1: string;
   date: string;
@@ -108,11 +108,11 @@ export const modelDataOpenRCA: Data[] = [
 
 // Mock data for OpenRCA 2.0 (placeholder)
 export const modelDataOpenRCA2: DataOpenRCA2[] = [
-  { name: 'DeepResearch', model: 'GLM-4.7', org: 'OpenRCA', accuracy: '60.3%', rcAcc: "24.2%", nodeF1: "64.6/75/61", edgeF1:"28.7/40/26", date: '2026/2/23', frameworkOpen: true, modelOpen: true},
-  { name: 'DeepResearch', model: 'Claude 4.5 Sonnet', org: 'OpenRCA', accuracy: '76.6%', rcAcc: "24.4%", nodeF1: "69.0/83/63", edgeF1:"53.0/75/46", date: '2026/2/23', frameworkOpen: true, modelOpen: false },
-  { name: 'DeepResearch', model: 'GPT-5.1', org: 'OpenRCA', accuracy: '62.8%', rcAcc: "35.9%", nodeF1: "70.4/72/78", edgeF1:"46.2/54/49", date: '2026/2/23', frameworkOpen: true, modelOpen: false },
-  { name: 'DeepResearch', model: 'Kimi K2', org: 'OpenRCA', accuracy: '58.4%', rcAcc: "26.6%", nodeF1: "67.2/81/62", edgeF1:"46.5/68/40", date: '2026/2/23', frameworkOpen: true, modelOpen: false },
-  { name: 'DeepResearch', model: 'Qwen3-32B', org: 'OpenRCA', accuracy: '31.4%', rcAcc: "20.2%", nodeF1: "51.6/79/41", edgeF1:"18.2/33/14", date: '2026/2/23', frameworkOpen: true, modelOpen: true },
-  { name: 'DeepResearch', model: 'Qwen3-Next-80B', org: 'OpenRCA', accuracy: '39.2%', rcAcc: "19.0%", nodeF1: "57.8/76/50", edgeF1:"28.3/48/23", date: '2026/2/23', frameworkOpen: true, modelOpen: true },
-  { name: 'DeepResearch', model: 'Seed 1.6', org: 'OpenRCA', accuracy: '42.2%', rcAcc: "24.2%", nodeF1: "62.0/79/56", edgeF1:"41.8/64/35", date: '2026/2/23', frameworkOpen: true, modelOpen: false },
+  { name: 'DeepResearch', model: 'GLM-4.7', org: 'OpenRCA', accuracy: '60.3%', rcF1: "46.6/60/40", nodeF1: "64.6/75/61", edgeF1:"28.7/40/26", date: '2026/2/23', frameworkOpen: true, modelOpen: true},
+  { name: 'DeepResearch', model: 'Claude 4.5 Sonnet', org: 'OpenRCA', accuracy: '76.6%', rcF1: "60.3/75/53", nodeF1: "69.0/83/63", edgeF1:"53.0/75/46", date: '2026/2/23', frameworkOpen: true, modelOpen: false },
+  { name: 'DeepResearch', model: 'GPT-5.1', org: 'OpenRCA', accuracy: '62.8%', rcF1: "47.3/61/41", nodeF1: "70.4/72/78", edgeF1:"46.2/54/49", date: '2026/2/23', frameworkOpen: true, modelOpen: false },
+  { name: 'DeepResearch', model: 'Kimi K2', org: 'OpenRCA', accuracy: '58.4%', rcF1: "44.6/57/39", nodeF1: "65.6/78/61", edgeF1:"45.0/65/39", date: '2026/2/23', frameworkOpen: true, modelOpen: false },
+  { name: 'DeepResearch', model: 'Qwen3-32B', org: 'OpenRCA', accuracy: '31.4%', rcF1: "23.0/31/19", nodeF1: "50.2/77/40", edgeF1:"17.7/32/13", date: '2026/2/23', frameworkOpen: true, modelOpen: true },
+  { name: 'DeepResearch', model: 'Qwen3-Next-80B', org: 'OpenRCA', accuracy: '39.2%', rcF1: "29.6/39/25", nodeF1: "57.8/76/50", edgeF1:"28.3/48/23", date: '2026/2/23', frameworkOpen: true, modelOpen: true },
+  { name: 'DeepResearch', model: 'Seed 1.6', org: 'OpenRCA', accuracy: '42.2%', rcF1: "31.7/41/28", nodeF1: "60.4/76/55", edgeF1:"40.4/62/34", date: '2026/2/23', frameworkOpen: true, modelOpen: false },
 ];

@@ -131,7 +131,7 @@ const Home = () => {
     ? Math.max(...filteredAndSortedDataOpenRCA2.map(row => parseFloat(row.accuracy)))
     : 0;
   const maxRcF1 = filteredAndSortedDataOpenRCA2.length > 0
-    ? Math.max(...filteredAndSortedDataOpenRCA2.map(row => parseFloat(row.rcAcc)))
+    ? Math.max(...filteredAndSortedDataOpenRCA2.map(row => parseFloat(row.rcF1)))
     : 0;
   const maxNodeF1 = filteredAndSortedDataOpenRCA2.length > 0
     ? Math.max(...filteredAndSortedDataOpenRCA2.map(row => parseFloat(row.nodeF1)))
@@ -238,9 +238,14 @@ const Home = () => {
     { id: 'frameworkOpen', label: statusHeaderLabel, width: '22%', sortable: false },
     { id: 'accuracy', label: 'Acc.', width: '7%', sortable: true },
     {
-      id: 'rcAcc',
-      label: (<span style={{ whiteSpace: 'nowrap' }}>Acc.(RC)</span>),
-      width: '7%',
+      id: 'rcF1',
+      label: (
+        <Box sx={{ lineHeight: 1.05 }}>
+          <Box component="span" sx={{ display: 'block', fontWeight: 700, letterSpacing: '0.06em' }}>RC</Box>
+          <Box component="span" sx={{ display: 'block', opacity: 0.9, mt: 0.35 }}>F1 / P / R</Box>
+        </Box>
+      ),
+      width: '8%',
       sortable: true
     },
     {
@@ -962,11 +967,11 @@ url={https://openreview.net/forum?id=M4qNIzQYpd}
                             sx={{
                               width: '7%',
                               textAlign: 'center',
-                              fontWeight: parseFloat(row.rcAcc) === maxRcF1 ? 600 : 'inherit',
-                              color: parseFloat(row.rcAcc) === maxRcF1 ? '#1976d2' : 'inherit'
+                              fontWeight: parseFloat(row.rcF1) === maxRcF1 ? 600 : 'inherit',
+                              color: parseFloat(row.rcF1) === maxRcF1 ? '#1976d2' : 'inherit'
                             }}
                           >
-                            {row.rcAcc}
+                            {row.rcF1}
                           </TableCell>
                           <TableCell
                             sx={{
